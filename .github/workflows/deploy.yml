@@ -37,4 +37,4 @@ jobs:
 
       - run: gh release create v${{inputs.app-version}} dist/"Electron Vite Monorepo Template"* dist/latest*.yml --repo ${{github.repository}}
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
