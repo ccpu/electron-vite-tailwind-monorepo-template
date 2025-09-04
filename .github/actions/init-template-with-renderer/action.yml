@@ -48,12 +48,12 @@ runs:
         fi
       shell: bash
 
+    - name: Install Dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
+
     - run: |
         pnpm run create-renderer -- -- --template ${{inputs.renderer-template}}
         pnpm run integrate-renderer
       shell: bash
       if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'
-
-    - name: Install Dependencies
-      run: pnpm install --frozen-lockfile
-      shell: bash
