@@ -49,7 +49,7 @@ runs:
       shell: bash
 
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --no-frozen-lockfile
       shell: bash
 
     - name: Install Turbo CLI
@@ -63,6 +63,6 @@ runs:
       if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'
 
     - name: Update lockfile after renderer creation
-      run: pnpm install
+      run: pnpm install --no-frozen-lockfile
       shell: bash
       if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'
