@@ -1,0 +1,59 @@
+name: Setup boilerplate
+description: 'Initializes the Electron template with renderer support, sets up Node, pnpm, and installs dependencies.'
+inputs:
+  renderer-template:
+    description: Define what vite template should be used to create renderer in case if renderer package doesn't exist
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        Xvfb :99 -screen 0 1280x960x24 &
+        echo "DISPLAY=:99" >> $GITHUB_ENV
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: latest
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10.15.0
+        run_install: false
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Check if renderer directory exists
+      id: check-renderer
+      run: >-
+        if [ -d "packages/renderer" ]; then
+          echo "RENDERER_EXIST=true" >> $GITHUB_OUTPUT
+        else
+          echo "RENDERER_EXIST=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - run: |
+        pnpm run create-renderer -- -- --template ${{inputs.renderer-template}}
+        pnpm run integrate-renderer
+      shell: bash
+      if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'
+
+    - name: Install Dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash

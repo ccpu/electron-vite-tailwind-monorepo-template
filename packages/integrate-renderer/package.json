@@ -1,0 +1,26 @@
+{
+  "name": "@app/integrate-renderer",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "start": "node index.js --no-warnings",
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test": "vitest --run --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
+  "prettier": "@internal/prettier-config",
+  "devDependencies": {
+    "@internal/eslint-config": "workspace:*",
+    "@internal/prettier-config": "workspace:*",
+    "@internal/tsconfig": "workspace:*",
+    "@internal/vitest-config": "workspace:*",
+    "vitest": "catalog:dev"
+  }
+}
