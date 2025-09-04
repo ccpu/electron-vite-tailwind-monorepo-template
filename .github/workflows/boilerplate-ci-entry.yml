@@ -9,13 +9,11 @@ on:
     paths-ignore:
       - '**.md'
       - .editorconfig
-      - '.idea/**'
       - '.vscode/**'
   pull_request:
     paths-ignore:
       - '**.md'
       - .editorconfig
-      - '.idea/**'
       - '.vscode/**'
 
 concurrency:
