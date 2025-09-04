@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2025-01-XX
+
+### 🎯 React-Focused Simplification
+
+**BREAKING CHANGES**: This release simplifies the template to focus exclusively on React applications.
+
+#### ✨ Changes Made
+
+- **🔧 Simplified CI/CD**: Removed multi-framework testing and renderer creation logic
+  - Updated GitHub Actions to remove `renderer-template` inputs
+  - Renamed `init-template-with-renderer` action to `setup-project`
+  - Streamlined CI workflows to focus on React-only builds
+- **📦 Package Cleanup**: Removed unnecessary packages
+  - Deleted `packages/integrate-renderer` package
+  - Removed `create-renderer` and `integrate-renderer` scripts from root package.json
+- **📚 Updated Documentation**:
+  - Updated README to reflect React-specific nature
+  - Added clear acknowledgment of the original template
+  - Simplified setup instructions (no renderer creation needed)
+- **🎯 Project Naming**: Updated project name to `react-electron-vite-monorepo-template`
+
+#### 🎯 Why This Change?
+
+This template is now specifically designed for developers who want to build React Electron applications without the complexity of multi-framework support. The React renderer is pre-configured and ready to use.
+
+#### 🚀 Migration Guide
+
+If you're upgrading from a previous version:
+
+1. The React renderer is already included - no setup needed
+2. Remove any references to `create-renderer` or `integrate-renderer` scripts
+3. CI/CD workflows no longer need `renderer-template` parameters
+
+---
+
 ## [1.0.0] - 2025-03-09
 
 ### 🎉 Initial Release

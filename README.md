@@ -1,4 +1,4 @@
-# Electron Vite Monorepo Template
+# React Electron Vite Monorepo Template
 
 <!-- ![GitHub last commit](https://img.shields.io/github/last-commit/ccpu/electron-vite-tailwind-monorepo-template?label=last%20update)
 ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/ccpu/electron-vite-tailwind-monorepo-template/dev/electron)
@@ -6,14 +6,16 @@
 ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/ccpu/electron-vite-tailwind-monorepo-template/dev/vite?filename=packages%2Fmain%2Fpackage.json)
 ![GitHub package.json dev/peer/optional dependency version](https://img.shields.io/github/package-json/dependency-version/ccpu/electron-vite-tailwind-monorepo-template/dev/playwright) -->
 
-This is a modern, secure Electron application template built with **pnpm monorepo**, **Turbo**, **Vite**, **React**, **TypeScript**, **Tailwind CSS**, and **Vitest**. Written following the latest security requirements, recommendations, and best practices for Electron development.
+This is a modern, secure React Electron application template built with **pnpm monorepo**, **Turbo**, **Vite**, **React**, **TypeScript**, **Tailwind CSS**, and **Vitest**. Written following the latest security requirements, recommendations, and best practices for Electron development.
+
+> This template is specifically designed for React applications and comes with React pre-configured. It's based on the excellent [vite-electron-builder](https://github.com/cawa-93/vite-electron-builder) template by [cawa-93](https://github.com/cawa-93).
 
 ## ✨ Features
 
 ### 🚀 Modern Development Stack
 
 - **⚡ Vite** - Lightning fast build tool and dev server
-- **⚛️ React 19** - Latest React with modern features
+- **⚛️ React 19** - Latest React with modern features and pre-configured setup
 - **🏗️ TypeScript** - Type safety and better DX
 - **🎨 Tailwind CSS v4** - Utility-first CSS framework with latest features
 - **🧪 Vitest** - Fast unit testing framework
@@ -30,7 +32,7 @@ This is a modern, secure Electron application template built with **pnpm monorep
 
 ## Get started
 
-Follow these steps to get started with the template:
+Follow these steps to get started with the React Electron template:
 
 1. Click the **[Use this template](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/generate)** button (you must be logged in) or clone this repo:
 
@@ -58,6 +60,9 @@ Follow these steps to get started with the template:
 
 That's all you need! 🎉
 
+> [!NOTE]
+> This template comes with React pre-configured and ready to use. No additional setup or renderer creation is needed - just start coding your React application!
+
 > [!TIP]
 > You can explore the demo application for various frameworks and operating systems in the [Deployment](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/deployments) section.
 > This will allow you to see how the application performs across different environments.
@@ -79,7 +84,7 @@ This project uses a **monorepo architecture** with **pnpm workspaces** and **Tur
 ├── 🛠️ dev-mode/      # Development mode utilities
 ├── 🚀 electron-entry/ # Electron entry point
 ├── 📊 electron-versions/ # Electron version management
-└── 🔗 integrate-renderer/ # Renderer integration
+└── 🎨 ui/            # Shared UI components library
 
 📁 tooling/           # Shared development tools
 ├── 🧹 eslint/        # ESLint configurations
@@ -102,7 +107,7 @@ This project uses a **monorepo architecture** with **pnpm workspaces** and **Tur
 - **[`packages/dev-mode`](packages/dev-mode)** - Development mode utilities
 - **[`packages/electron-entry`](packages/electron-entry)** - Electron entry point
 - **[`packages/electron-versions`](packages/electron-versions)** - Electron version management
-- **[`packages/integrate-renderer`](packages/integrate-renderer)** - Renderer integration
+- **[`packages/ui`](packages/ui)** - Shared UI components library
 
 #### Development Tools:
 
@@ -155,14 +160,15 @@ pnpm run test:e2e
 
 ### 🔗 Working with Dependencies
 
-#### Frontend Dependencies (Renderer)
+#### Frontend Dependencies (React Renderer)
 
-The renderer package works like a regular React web application. You can use any browser-compatible dependencies:
+The renderer package is a React application with Tailwind CSS. You can use any browser-compatible dependencies:
 
-- ✅ React, Vue, Angular, Svelte
+- ✅ React ecosystem libraries (React Router, React Query, Zustand, etc.)
 - ✅ Lodash, Axios, Date-fns
-- ✅ UI libraries (Material-UI, Chakra UI, etc.)
-- ✅ CSS frameworks (Tailwind CSS, Bootstrap, etc.)
+- ✅ UI libraries (Material-UI, Chakra UI, Ant Design, etc.)
+- ✅ Additional CSS frameworks or utilities
+- ✅ Any npm packages compatible with modern React
 
 #### Node.js Dependencies (Main & Preload)
 
@@ -319,13 +325,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This template is based on the excellent work by [cawa-93](https://github.com/cawa-93) from the original [vite-electron-builder](https://github.com/cawa-93/vite-electron-builder) repository.
 
-The original template provided the foundation for secure Electron development with Vite, and this version extends it with modern monorepo tooling, additional features, and enhanced developer experience.
+The original template provided the foundation for secure Electron development with Vite, and this version extends it with React-specific features, modern monorepo tooling, and enhanced developer experience.
+
+**Key Changes from Original:**
+
+- ⚛️ **React-focused**: Pre-configured with React 19, removing multi-framework support for simplicity
+- 🏗️ **Monorepo Structure**: Added pnpm workspace and Turbo for better organization
+- 🎨 **Tailwind CSS v4**: Integrated latest Tailwind CSS with modern features
+- 🧪 **Enhanced Testing**: Added Vitest and React Testing Library setup
+- 📦 **Simplified CI/CD**: Removed renderer creation logic, focusing on React-only builds
 
 **Special thanks to:**
 
 - [cawa-93](https://github.com/cawa-93) for creating the original secure Electron + Vite template
 - The Electron team for their security guidance and best practices
 - The Vite team for the amazing build tool
+- The React team for the excellent frontend framework
 - The entire open-source community for the tools that make this template possible
 
 ---
