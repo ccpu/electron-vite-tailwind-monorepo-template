@@ -48,8 +48,8 @@ runs:
         fi
       shell: bash
 
-    - name: Install Dependencies
-      run: pnpm install --frozen-lockfile
+    - name: Install dependencies
+      run: pnpm install
       shell: bash
 
     - name: Install Turbo CLI
