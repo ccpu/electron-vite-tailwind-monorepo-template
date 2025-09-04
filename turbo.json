@@ -60,7 +60,7 @@
     "NODE_ENV",
     "CI",
     "GITHUB_ACTIONS",
-    "GITHUB_TOKEN",
+    "GH_TOKEN",
     "npm_lifecycle_event",
     "DEV",
     "MODE"
