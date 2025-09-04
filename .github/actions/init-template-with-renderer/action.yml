@@ -52,8 +52,17 @@ runs:
       run: pnpm install --frozen-lockfile
       shell: bash
 
+    - name: Install Turbo CLI
+      run: pnpm add -g turbo
+      shell: bash
+
     - run: |
         pnpm run create-renderer -- -- --template ${{inputs.renderer-template}}
         pnpm run integrate-renderer
+      shell: bash
+      if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'
+
+    - name: Update lockfile after renderer creation
+      run: pnpm install
       shell: bash
       if: inputs.renderer-template != '' && steps.check-renderer.outputs.RENDERER_EXIST == 'false'

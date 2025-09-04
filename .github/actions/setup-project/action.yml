@@ -40,13 +40,3 @@ runs:
       run: pnpm add -g turbo
       shell: bash
 
-    - name: Build packages
-      if: ${{ inputs.build-web == 'true' }}
-      run: pnpm turbo build --filter=web
-      shell: bash
-
-    - name: Build OpenNext.js for Cloudflare
-      if: ${{ inputs.build-web == 'true' }}
-      run: cd apps/web && npx opennextjs-cloudflare build
-      shell: bash
-
