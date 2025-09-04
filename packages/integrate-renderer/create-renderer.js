@@ -1,8 +1,14 @@
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const packageJson = JSON.parse(readFileSync('../../package.json', 'utf8'));
+const filename = fileURLToPath(import.meta.url);
+const dir = dirname(filename);
+
+const packageJsonPath = join(dir, '../../package.json');
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
 
 const viteVersion = packageJson.devDependencies['create-vite'] ?? 'latest';
 const templateIndex = process.argv.findIndex((arg) => arg.startsWith('--template'));

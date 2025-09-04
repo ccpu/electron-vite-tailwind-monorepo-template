@@ -1,7 +1,13 @@
 import * as fs from 'node:fs';
+import { dirname, join } from 'node:path';
 import { exit } from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const pkgJson = JSON.parse(fs.readFileSync('../renderer/package.json', 'utf8'));
+const filename = fileURLToPath(import.meta.url);
+const dir = dirname(filename);
+
+const rendererPkgPath = join(dir, '../renderer/package.json');
+const pkgJson = JSON.parse(fs.readFileSync(rendererPkgPath, 'utf8'));
 
 const indent = 2;
 
@@ -97,7 +103,7 @@ function createStepLogger() {
 }
 
 function savePkg() {
-  fs.writeFileSync('../renderer/package.json', JSON.stringify(pkgJson, null, indent), {
+  fs.writeFileSync(rendererPkgPath, JSON.stringify(pkgJson, null, indent), {
     encoding: 'utf8',
   });
 }
