@@ -37,7 +37,7 @@
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vitest-config": "workspace:*",
-    "@tailwindcss/vite": "^4.1.12",
+    "@tailwindcss/vite": "^4.1.13",
     "@testing-library/jest-dom": "catalog:dev",
     "@testing-library/react": "catalog:dev",
     "@testing-library/user-event": "catalog:dev",
