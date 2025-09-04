@@ -44,7 +44,7 @@
     "test:e2e": "npx playwright test ./tests/e2e.spec.ts",
     "typecheck": "turbo run typecheck",
     "create-renderer": "cd packages && node ./integrate-renderer/create-renderer.js",
-    "integrate-renderer": "turbo run start --filter=packages/integrate-renderer",
+    "integrate-renderer": "turbo run start --filter=@app/integrate-renderer",
     "tsc:watch": "tsc --noEmit --watch --project tsconfig.watch.json",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "pnpm format --write",

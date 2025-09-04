@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const filename = fileURLToPath(import.meta.url);
 const dir = dirname(filename);
 
-const rendererPkgPath = join(dir, '../renderer/package.json');
+const rendererPkgPath = join(dir, '../../app/renderer/package.json');
 const pkgJson = JSON.parse(fs.readFileSync(rendererPkgPath, 'utf8'));
 
 const indent = 2;

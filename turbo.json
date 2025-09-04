@@ -18,6 +18,11 @@
       "cache": false,
       "persistent": false
     },
+    "start": {
+      "dependsOn": ["^start"],
+      "cache": false,
+      "persistent": false
+    },
     "format": {
       "outputs": [".cache/.prettiercache"],
       "outputLogs": "new-only"
