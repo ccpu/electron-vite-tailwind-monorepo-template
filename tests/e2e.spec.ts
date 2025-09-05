@@ -130,19 +130,23 @@ test.describe('Main window web content', async () => {
 test.describe('Preload context should be exposed', async () => {
   test.describe(`versions should be exposed`, async () => {
     test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(() => typeof globalThis[btoa('versions')]);
+      const type = await page.evaluate(
+        () => typeof (globalThis as any)[btoa('versions')],
+      );
       expect(type).toEqual('object');
     });
 
     test('with same value', async ({ page, electronVersions }) => {
-      const value = await page.evaluate(() => globalThis[btoa('versions')]);
+      const value = await page.evaluate(() => (globalThis as any)[btoa('versions')]);
       expect(value).toEqual(electronVersions);
     });
   });
 
   test.describe(`sha256sum should be exposed`, async () => {
     test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(() => typeof globalThis[btoa('sha256sum')]);
+      const type = await page.evaluate(
+        () => typeof (globalThis as any)[btoa('sha256sum')],
+      );
       expect(type).toEqual('function');
     });
 
@@ -150,7 +154,7 @@ test.describe('Preload context should be exposed', async () => {
       const testString = btoa(`${Date.now() * Math.random()}`);
       const expectedValue = createHash('sha256').update(testString).digest('hex');
       const value = await page.evaluate(
-        (str) => globalThis[btoa('sha256sum')](str),
+        (str) => (globalThis as any)[btoa('sha256sum')](str),
         testString,
       );
       expect(value).toEqual(expectedValue);
@@ -159,7 +163,7 @@ test.describe('Preload context should be exposed', async () => {
 
   test.describe(`send should be exposed`, async () => {
     test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(() => typeof globalThis[btoa('send')]);
+      const type = await page.evaluate(() => typeof (globalThis as any)[btoa('send')]);
       expect(type).toEqual('function');
     });
 
@@ -171,7 +175,7 @@ test.describe('Preload context should be exposed', async () => {
       const testString = btoa(`${Date.now() * Math.random()}`);
       const expectedValue = btoa(testString);
       const value = await page.evaluate(
-        async (str) => await globalThis[btoa('send')]('test', str),
+        async (str) => await (globalThis as any)[btoa('send')]('test', str),
         testString,
       );
       expect(value).toEqual(expectedValue);

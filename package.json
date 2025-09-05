@@ -1,6 +1,5 @@
 {
   "name": "react-electron-vite-monorepo-template",
-  "type": "module",
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.15.0",
@@ -50,7 +49,7 @@
     "format:fix": "pnpm format --write",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache && pnpm lint:root",
     "lint:fix": "pnpm lint --fix && pnpm lint:root:fix",
-    "lint:root": "eslint scripts .github *.json --cache --cache-location .cache/.eslintcache",
+    "lint:root": "eslint tests scripts .github *.json --cache --cache-location .cache/.eslintcache",
     "lint:root:fix": "pnpm lint:root --fix",
     "lint:ws": "pnpm dlx sherif@latest",
     "fix:all": "pnpm format:fix && pnpm lint:fix",
