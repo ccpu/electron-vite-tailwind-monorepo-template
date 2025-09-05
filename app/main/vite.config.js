@@ -5,6 +5,10 @@ import { getNodeMajorVersion } from '@internal/electron-versions';
 import electronPath from 'electron';
 
 /**
+ * @typedef {import('node:child_process').ChildProcess} ChildProcess
+ */
+
+/**
  * @type {import('vite').UserConfig}
  * @see https://vitejs.dev/config/
  */
@@ -36,7 +40,7 @@ export default {
  * @return {import('vite').Plugin}
  */
 function handleHotReload() {
-  /** @type {ChildProcess} */
+  /** @type {ChildProcess | null} */
   let electronApp = null;
 
   /** @type {import('vite').ViteDevServer|null} */
@@ -50,14 +54,30 @@ function handleHotReload() {
         return;
       }
 
+      if (!config.plugins) {
+        throw new Error('No plugins found in config');
+      }
+
       const rendererWatchServerProvider = config.plugins.find(
-        (p) => p.name === '@app/renderer-watch-server-provider',
+        (p) =>
+          p &&
+          typeof p === 'object' &&
+          'name' in p &&
+          p.name === '@app/renderer-watch-server-provider',
       );
-      if (!rendererWatchServerProvider) {
-        throw new Error('Renderer watch server provider not found');
+      if (
+        !rendererWatchServerProvider ||
+        typeof rendererWatchServerProvider !== 'object' ||
+        !('api' in rendererWatchServerProvider)
+      ) {
+        throw new Error('Renderer watch server provider not found or invalid');
       }
 
       rendererWatchServer = rendererWatchServerProvider.api.provideRendererWatchServer();
+
+      if (!rendererWatchServer || !rendererWatchServer.resolvedUrls?.local) {
+        throw new Error('Renderer watch server not properly initialized');
+      }
 
       const [url] = rendererWatchServer.resolvedUrls.local;
       process.env.VITE_DEV_SERVER_URL = url;

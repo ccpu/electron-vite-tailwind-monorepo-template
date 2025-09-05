@@ -53,12 +53,18 @@ function mockExposed() {
 
   return {
     name: 'electron-main-exposer',
+    /**
+     * @param {string} id
+     */
     resolveId(id) {
       if (id.endsWith(virtualModuleId)) {
         return resolvedVirtualModuleId;
       }
       return null;
     },
+    /**
+     * @param {string} id
+     */
     async load(id) {
       if (id === resolvedVirtualModuleId) {
         const exportedNames = await resolveModuleExportNames('./src/index.ts', {
@@ -94,11 +100,23 @@ function handleHotReload() {
         return;
       }
 
+      if (!config.plugins) {
+        throw new Error('No plugins found in config');
+      }
+
       const rendererWatchServerProvider = config.plugins.find(
-        (p) => p.name === '@app/renderer-watch-server-provider',
+        (p) =>
+          p &&
+          typeof p === 'object' &&
+          'name' in p &&
+          p.name === '@app/renderer-watch-server-provider',
       );
-      if (!rendererWatchServerProvider) {
-        throw new Error('Renderer watch server provider not found');
+      if (
+        !rendererWatchServerProvider ||
+        typeof rendererWatchServerProvider !== 'object' ||
+        !('api' in rendererWatchServerProvider)
+      ) {
+        throw new Error('Renderer watch server provider not found or invalid');
       }
 
       rendererWatchServer = rendererWatchServerProvider.api.provideRendererWatchServer();

@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import process from 'node:process';
 import { getPackages } from '@manypkg/get-packages';
 
-const pkg = JSON.parse(readFileSync(new URL('package.json', import.meta.url)));
+const pkg = JSON.parse(readFileSync(new URL('package.json', import.meta.url)).toString());
 
 /** @type {() => Promise<import('electron-builder').Configuration>} */
 export default async () => {
@@ -32,9 +32,14 @@ export default async () => {
     const allFilesToInclude = [];
 
     for (const pkg of packages) {
+      // @ts-ignore
       let patterns = pkg.packageJson.files || ['dist/**', 'package.json'];
 
-      patterns = patterns.map((p) => join(pkg.relativeDir, p));
+      /** @type {string[]} */
+      patterns = patterns.map(
+        /** @param {string} p */
+        (p) => join(pkg.relativeDir, p),
+      );
       allFilesToInclude.push(...patterns);
     }
 

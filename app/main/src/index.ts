@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import type { AppInitConfig } from './AppInitConfig.js';
 import { createModuleRunner } from './ModuleRunner.js';
 import { terminateAppOnLastWindowClose } from './modules/ApplicationTerminatorOnLastWindowClose.js';

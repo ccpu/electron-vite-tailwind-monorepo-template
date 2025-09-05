@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 (async () => {
+  // @ts-ignore
   const mainDist = await import('../app/main/dist/index.js');
   const { initApp } = mainDist;
 
@@ -38,6 +39,9 @@ if (
   process.env.PLAYWRIGHT_TEST === 'true' ||
   Boolean(process.env.CI)
 ) {
+  /**
+   * @param {...any} args
+   */
   function showAndExit(...args) {
     console.error(...args);
     process.exit(1);

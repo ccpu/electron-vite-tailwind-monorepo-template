@@ -44,7 +44,7 @@
     "test": "turbo run test",
     "test:e2e": "pnpm run compile && npx playwright test ./tests/e2e.spec.ts",
     "typecheck": "turbo run typecheck",
-    "tsc:watch": "tsc --noEmit --watch --project tsconfig.watch.json",
+    "tsc:watch": "tsc --noEmit --watch --project tsconfig.json",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "pnpm format --write",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache && pnpm lint:root",
