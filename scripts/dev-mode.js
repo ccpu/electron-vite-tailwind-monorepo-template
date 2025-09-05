@@ -18,7 +18,7 @@ async function main() {
   process.env.MODE = mode;
 
   /**
-   * 2. We create a development server for the renderer. It is assumed that the renderer exists and is located in the “renderer” package.
+   * 2. We create a development server for the renderer. It is assumed that the renderer exists and is located in the "renderer" package.
    * This server should be started first because other packages depend on its settings.
    */
   /**

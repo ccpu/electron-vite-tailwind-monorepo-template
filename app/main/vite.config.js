@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-properties */
 import { spawn } from 'node:child_process';
 import process from 'node:process';
-import { getNodeMajorVersion } from '@app/electron-versions';
+import { getNodeMajorVersion } from '@internal/electron-versions';
 import electronPath from 'electron';
 
 /**

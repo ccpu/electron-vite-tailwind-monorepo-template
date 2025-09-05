@@ -1,4 +1,4 @@
-import { getChromeMajorVersion } from '@app/electron-versions';
+import { getChromeMajorVersion } from '@internal/electron-versions';
 import { resolveModuleExportNames } from 'mlly';
 
 /**

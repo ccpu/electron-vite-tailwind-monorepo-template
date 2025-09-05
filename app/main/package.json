@@ -27,7 +27,7 @@
     "@app/renderer": "*"
   },
   "devDependencies": {
-    "@app/electron-versions": "*",
+    "@internal/electron-versions": "*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",

@@ -62,6 +62,7 @@ export default async () => {
     files: [
       'LICENSE*',
       pkg.main,
+      'scripts/**',
       // Include workspace packages with their dist folders
       ...workspaceFiles,
       // Include all node_modules needed for production

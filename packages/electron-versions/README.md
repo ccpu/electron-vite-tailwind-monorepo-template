@@ -1,4 +1,4 @@
-# @app/electron-versions
+# @internal/electron-versions
 
 ## Description
 
@@ -9,7 +9,7 @@ A set of helper functions to get the versions of internal components bundled wit
 To install this package, use the following command:
 
 ```bash
-npm install -D @app/electron-versions
+npm install -D @internal/electron-versions
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ import {
   getElectronVersions,
   getNodeMajorVersion,
   getNodeVersion,
-} from '@app/electron-versions';
+} from '@internal/electron-versions';
 
 // Example usage
 console.log('Electron Versions:', getElectronVersions());
@@ -46,7 +46,7 @@ console.log('Node.js Major Version:', getNodeMajorVersion());
 An example of how you might use this package in a Vite configuration:
 
 ```javascript
-import { getChromeMajorVersion } from '@app/electron-versions';
+import { getChromeMajorVersion } from '@internal/electron-versions';
 
 export default {
   build: {

@@ -18,6 +18,7 @@ interface TestFixtures {
 
 const test = base.extend<TestFixtures>({
   electronApp: [
+    // eslint-disable-next-line no-empty-pattern
     async ({}, use) => {
       /**
        * Executable path depends on root package name!
