@@ -6,7 +6,7 @@
       "request": "launch",
       "name": "Debug Main Process",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/packages/dev-mode.js",
+      "program": "${workspaceFolder}/scripts/dev-mode.js",
       "autoAttachChildProcesses": true
     }
   ]
