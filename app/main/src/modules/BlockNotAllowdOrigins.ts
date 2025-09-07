@@ -1,6 +1,6 @@
 import type * as Electron from 'electron';
 import { URL } from 'node:url';
-import { AbstractSecurityRule } from './AbstractSecurityModule.js';
+import { AbstractSecurityRule } from './AbstractSecurityModule';
 
 /**
  * Block navigation to origins not on the allowlist.

@@ -1,5 +1,5 @@
-import type { AppModule } from '../AppModule.js';
-import type { ModuleContext } from '../ModuleContext.js';
+import type { AppModule } from '../AppModule';
+import type { ModuleContext } from '../ModuleContext';
 import installExtension, {
   BACKBONE_DEBUGGER,
   EMBER_INSPECTOR,

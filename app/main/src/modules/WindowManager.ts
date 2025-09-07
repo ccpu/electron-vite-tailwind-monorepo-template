@@ -1,6 +1,6 @@
-import type { AppInitConfig } from '../AppInitConfig.js';
-import type { AppModule } from '../AppModule.js';
-import type { ModuleContext } from '../ModuleContext.js';
+import type { AppInitConfig } from '../AppInitConfig';
+import type { AppModule } from '../AppModule';
+import type { ModuleContext } from '../ModuleContext';
 import { BrowserWindow } from 'electron';
 
 class WindowManager implements AppModule {

@@ -1,15 +1,15 @@
 /// <reference types="vite/client" />
 
-import type { AppInitConfig } from './AppInitConfig.js';
-import { createModuleRunner } from './ModuleRunner.js';
-import { terminateAppOnLastWindowClose } from './modules/ApplicationTerminatorOnLastWindowClose.js';
-import { autoUpdater } from './modules/AutoUpdater.js';
-import { allowInternalOrigins } from './modules/BlockNotAllowdOrigins.js';
-import { allowExternalUrls } from './modules/ExternalUrls.js';
-import { hardwareAccelerationMode } from './modules/HardwareAccelerationModule.js';
-import { createIpcNotificationModule } from './modules/IpcNotification.js';
-import { disallowMultipleAppInstance } from './modules/SingleInstanceApp.js';
-import { createWindowManagerModule } from './modules/WindowManager.js';
+import type { AppInitConfig } from './AppInitConfig';
+import { createModuleRunner } from './ModuleRunner';
+import { terminateAppOnLastWindowClose } from './modules/ApplicationTerminatorOnLastWindowClose';
+import { autoUpdater } from './modules/AutoUpdater';
+import { allowInternalOrigins } from './modules/BlockNotAllowdOrigins';
+import { allowExternalUrls } from './modules/ExternalUrls';
+import { hardwareAccelerationMode } from './modules/HardwareAccelerationModule';
+import { createIpcNotificationModule } from './modules/IpcNotification';
+import { disallowMultipleAppInstance } from './modules/SingleInstanceApp';
+import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
   const moduleRunner = createModuleRunner()

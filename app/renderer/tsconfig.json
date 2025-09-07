@@ -1,8 +1,5 @@
 {
   "extends": "@internal/tsconfig/tsconfig.app.json",
-  "compilerOptions": {
-    "baseUrl": "."
-  },
   "include": ["."],
   "exclude": ["dist", "node_modules"]
 }

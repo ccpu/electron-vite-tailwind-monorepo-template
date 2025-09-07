@@ -1,5 +1,5 @@
 import type * as Electron from 'electron';
-import type { AppModule } from '../AppModule.js';
+import type { AppModule } from '../AppModule';
 import process from 'node:process';
 
 class SingleInstanceApp implements AppModule {
