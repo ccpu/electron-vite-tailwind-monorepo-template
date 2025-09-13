@@ -146,6 +146,18 @@ class WindowManager implements AppModule {
       }
     });
 
+    // Close all other windows when the main window is closed
+    if (windowName === 'main') {
+      browserWindow.on('closed', () => {
+        const allWindows = BrowserWindow.getAllWindows();
+        for (const win of allWindows) {
+          if (win !== browserWindow && !win.isDestroyed()) {
+            win.close();
+          }
+        }
+      });
+    }
+
     return browserWindow;
   }
 

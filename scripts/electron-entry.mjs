@@ -1,4 +1,4 @@
-import path from 'node:path';
+import fs from 'node:fs';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
@@ -17,47 +17,58 @@ import { fileURLToPath } from 'node:url';
   const mainDist = await import('../app/main/dist/index.js');
   const { initApp } = mainDist;
 
-  // Function to get the correct settings HTML path for dev vs production
-  function getSettingsHtmlPath() {
-    if (process.env.MODE === 'development') {
-      // Development: load from source directory
-      return fileURLToPath(
-        new URL('../app/settings-renderer/settings.html', import.meta.url),
-      );
-    }
-    // Production: load from extraResources in the resources folder
-    return path.join(process.resourcesPath, 'app', 'settings-renderer', 'settings.html');
-  }
+  // Build windows object dynamically
+  const windowsPath = new URL('../app/windows', import.meta.url);
+  const windowsFolders = fs
+    .readdirSync(fileURLToPath(windowsPath), { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
-  const windows = {
-    main: {
-      renderer:
-        process.env.MODE === 'development' && Boolean(process.env.VITE_DEV_SERVER_URL)
-          ? new URL(process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173')
-          : {
-              path: fileURLToPath(
-                new URL('../app/windows/main/renderer/dist/index.html', import.meta.url),
-              ),
-            },
+  const windows = {};
+  for (const folder of windowsFolders) {
+    const isMain = folder === 'main';
+    let renderer;
+
+    if (process.env.MODE === 'development') {
+      // In development mode, all windows use their respective dev servers
+      let devServerUrl;
+
+      if (isMain && Boolean(process.env.VITE_DEV_SERVER_URL)) {
+        devServerUrl = process.env.VITE_DEV_SERVER_URL;
+      } else {
+        // For non-main windows, check for their specific dev server URL
+        const envVar = `VITE_DEV_SERVER_URL_${folder.toUpperCase()}`;
+        devServerUrl = process.env[envVar];
+      }
+
+      if (devServerUrl) {
+        renderer = new URL(devServerUrl);
+      } else {
+        // Fallback to built files if dev server URL not available
+        renderer = {
+          path: fileURLToPath(
+            new URL(`../app/windows/${folder}/renderer/dist/index.html`, import.meta.url),
+          ),
+        };
+      }
+    } else {
+      // In production mode, all windows use built files
+      renderer = {
+        path: fileURLToPath(
+          new URL(`../app/windows/${folder}/renderer/dist/index.html`, import.meta.url),
+        ),
+      };
+    }
+
+    windows[folder] = {
+      renderer,
       preload: {
         path: fileURLToPath(
-          new URL('../app/windows/main/preload/dist/exposed.mjs', import.meta.url),
+          new URL(`../app/windows/${folder}/preload/dist/exposed.mjs`, import.meta.url),
         ),
       },
-    },
-    settings: {
-      // 🔧 We point to the correct HTML file for both dev and production
-      renderer: {
-        path: getSettingsHtmlPath(),
-      },
-      // 🔧 And the new preload script
-      preload: {
-        path: fileURLToPath(
-          new URL('../app/settings-preload/dist/exposed.mjs', import.meta.url),
-        ),
-      },
-    },
-  };
+    };
+  }
 
   // noinspection JSIgnoredPromiseFromCall
   initApp({

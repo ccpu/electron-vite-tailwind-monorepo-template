@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
 import { getPackages } from '@manypkg/get-packages';
@@ -48,18 +48,37 @@ export default async () => {
 
   const workspaceFiles = await getListOfFilesFromEachWorkspace();
 
+  // Build extraResources dynamically for windows excluding main
+  const extraResources = [];
+  const windowsPath = join(process.cwd(), 'app', 'windows');
+  if (existsSync(windowsPath)) {
+    const windowsFolders = readdirSync(windowsPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+    for (const folder of windowsFolders) {
+      if (folder === 'main') continue;
+      const rendererPath = join(windowsPath, folder, 'renderer');
+      if (existsSync(rendererPath)) {
+        const htmlFiles = readdirSync(rendererPath).filter((file) =>
+          file.endsWith('.html'),
+        );
+        for (const htmlFile of htmlFiles) {
+          extraResources.push({
+            from: join('app', 'windows', folder, 'renderer', htmlFile),
+            to: join('app', 'windows', folder, 'renderer', htmlFile),
+          });
+        }
+      }
+    }
+  }
+
   return {
     productName: 'electron-app',
     directories: {
       output: 'dist',
       buildResources: 'buildResources',
     },
-    extraResources: [
-      {
-        from: 'app/settings-renderer/settings.html',
-        to: 'app/settings-renderer/settings.html',
-      },
-    ],
+    extraResources,
     generateUpdatesFilesForAllChannels: true,
     linux: {
       target: ['deb'],

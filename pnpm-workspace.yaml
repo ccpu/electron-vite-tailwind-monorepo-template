@@ -3,6 +3,7 @@ packages:
   - app/main
   - app/windows/*/*
   - tooling/*
+  - templates/*/*
 
 catalogs:
   dev:

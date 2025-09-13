@@ -14,12 +14,11 @@ function App() {
       <div className="bg-background text-foreground min-h-screen">
         <div className="container mx-auto p-8">
           {/* Header with theme toggle */}
-          <div className="mb-8 flex items-center justify-between">
+          <div className="mb-8 flex items-center justify-center">
             <h1 className="text-primary text-3xl font-bold">{appConfig.name}</h1>
             {/* {appConfig.theme.enabled && <ThemeToggle />} */}
           </div>
 
-          {/* Main content */}
           <div className="flex flex-col items-center space-y-8">
             <div className="flex space-x-8">
               <a
@@ -45,7 +44,7 @@ function App() {
             </div>
 
             <h2 className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-              Vite + React
+              Vite + Reacts
             </h2>
 
             <div className="bg-card rounded-lg border p-6 shadow-sm">

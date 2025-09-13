@@ -171,10 +171,10 @@ importers:
     dependencies:
       '@app/preload':
         specifier: '*'
-        version: link:../preload
+        version: link:../windows/main/preload
       '@app/renderer':
         specifier: '*'
-        version: link:../renderer
+        version: link:../windows/main/renderer
     devDependencies:
       '@internal/electron-versions':
         specifier: '*'
@@ -207,23 +207,26 @@ importers:
         specifier: 0.1.4
         version: 0.1.4(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
 
-  app/preload:
+  app/windows/main/preload:
     devDependencies:
       '@internal/electron-versions':
         specifier: '*'
-        version: link:../../packages/electron-versions
+        version: link:../../../../packages/electron-versions
       '@internal/eslint-config':
         specifier: workspace:*
-        version: link:../../tooling/eslint
+        version: link:../../../../tooling/eslint
       '@internal/prettier-config':
         specifier: workspace:*
-        version: link:../../tooling/prettier
+        version: link:../../../../tooling/prettier
       '@internal/tsconfig':
         specifier: workspace:*
-        version: link:../../tooling/typescript
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
       '@internal/vitest-config':
         specifier: workspace:*
-        version: link:../../tooling/vitest
+        version: link:../../../../tooling/vitest
       mlly:
         specifier: 1.8.0
         version: 1.8.0
@@ -234,14 +237,14 @@ importers:
         specifier: catalog:dev
         version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1)
 
-  app/renderer:
+  app/windows/main/renderer:
     dependencies:
       '@internal/ui':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../../../packages/ui
       '@internal/utils':
         specifier: workspace:*
-        version: link:../../packages/utils
+        version: link:../../../../packages/utils
       react:
         specifier: catalog:prod
         version: 19.1.1
@@ -254,16 +257,19 @@ importers:
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*
-        version: link:../../tooling/eslint
+        version: link:../../../../tooling/eslint
       '@internal/prettier-config':
         specifier: workspace:*
-        version: link:../../tooling/prettier
+        version: link:../../../../tooling/prettier
       '@internal/tsconfig':
         specifier: workspace:*
-        version: link:../../tooling/typescript
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
       '@internal/vitest-config':
         specifier: workspace:*
-        version: link:../../tooling/vitest
+        version: link:../../../../tooling/vitest
       '@tailwindcss/vite':
         specifier: catalog:dev
         version: 4.1.13(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
@@ -316,20 +322,26 @@ importers:
         specifier: catalog:dev
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(@vitest/ui@3.2.4)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.8.1)
 
-  app/settings-preload:
+  app/windows/settings/preload:
     devDependencies:
+      '@internal/electron-versions':
+        specifier: workspace:*
+        version: link:../../../../packages/electron-versions
       '@internal/eslint-config':
         specifier: workspace:*
-        version: link:../../tooling/eslint
+        version: link:../../../../tooling/eslint
       '@internal/prettier-config':
         specifier: workspace:*
-        version: link:../../tooling/prettier
+        version: link:../../../../tooling/prettier
       '@internal/tsconfig':
         specifier: workspace:*
-        version: link:../../tooling/typescript
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
       '@internal/vitest-config':
         specifier: workspace:*
-        version: link:../../tooling/vitest
+        version: link:../../../../tooling/vitest
       mlly:
         specifier: 1.8.0
         version: 1.8.0
@@ -339,6 +351,91 @@ importers:
       vite:
         specifier: catalog:dev
         version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1)
+
+  app/windows/settings/renderer:
+    dependencies:
+      '@internal/ui':
+        specifier: workspace:*
+        version: link:../../../../packages/ui
+      '@internal/utils':
+        specifier: workspace:*
+        version: link:../../../../packages/utils
+      react:
+        specifier: catalog:prod
+        version: 19.1.1
+      react-dom:
+        specifier: catalog:prod
+        version: 19.1.1(react@19.1.1)
+      react-icons:
+        specifier: catalog:prod
+        version: 5.5.0(react@19.1.1)
+    devDependencies:
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../../tooling/vite
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../../../tooling/vitest
+      '@tailwindcss/vite':
+        specifier: catalog:dev
+        version: 4.1.13(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      '@testing-library/jest-dom':
+        specifier: catalog:dev
+        version: 6.8.0
+      '@testing-library/react':
+        specifier: catalog:dev
+        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@testing-library/user-event':
+        specifier: catalog:dev
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/react':
+        specifier: catalog:dev
+        version: 19.1.12
+      '@types/react-dom':
+        specifier: catalog:dev
+        version: 19.1.9(@types/react@19.1.12)
+      '@vitejs/plugin-react':
+        specifier: catalog:dev
+        version: 5.0.2(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      '@vitest/coverage-v8':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: catalog:dev
+        version: 9.34.0(jiti@2.5.1)
+      globals:
+        specifier: ^16.3.0
+        version: 16.3.0
+      jsdom:
+        specifier: catalog:dev
+        version: 26.1.0
+      minimatch:
+        specifier: ^10.0.3
+        version: 10.0.3
+      tailwindcss:
+        specifier: catalog:dev
+        version: 4.1.12
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+      vite:
+        specifier: catalog:dev
+        version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1)
+      vitest:
+        specifier: catalog:dev
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(@vitest/ui@3.2.4)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.8.1)
 
   packages/electron-versions:
     devDependencies:
@@ -435,6 +532,121 @@ importers:
         specifier: catalog:dev
         version: 5.9.2
 
+  templates/new-window/preload:
+    devDependencies:
+      '@internal/electron-versions':
+        specifier: workspace:*
+        version: link:../../../packages/electron-versions
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../../tooling/prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../tooling/vite
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../../tooling/vitest
+      mlly:
+        specifier: 1.8.0
+        version: 1.8.0
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+      vite:
+        specifier: catalog:dev
+        version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1)
+
+  templates/new-window/renderer:
+    dependencies:
+      '@internal/ui':
+        specifier: workspace:*
+        version: link:../../../packages/ui
+      '@internal/utils':
+        specifier: workspace:*
+        version: link:../../../packages/utils
+      react:
+        specifier: catalog:prod
+        version: 19.1.1
+      react-dom:
+        specifier: catalog:prod
+        version: 19.1.1(react@19.1.1)
+      react-icons:
+        specifier: catalog:prod
+        version: 5.5.0(react@19.1.1)
+    devDependencies:
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../../../tooling/eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../../../tooling/prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/typescript
+      '@internal/vite':
+        specifier: workspace:*
+        version: link:../../../tooling/vite
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../../../tooling/vitest
+      '@tailwindcss/vite':
+        specifier: catalog:dev
+        version: 4.1.13(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      '@testing-library/jest-dom':
+        specifier: catalog:dev
+        version: 6.8.0
+      '@testing-library/react':
+        specifier: catalog:dev
+        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@testing-library/user-event':
+        specifier: catalog:dev
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/react':
+        specifier: catalog:dev
+        version: 19.1.12
+      '@types/react-dom':
+        specifier: catalog:dev
+        version: 19.1.9(@types/react@19.1.12)
+      '@vitejs/plugin-react':
+        specifier: catalog:dev
+        version: 5.0.2(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      '@vitest/coverage-v8':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: catalog:dev
+        version: 9.34.0(jiti@2.5.1)
+      globals:
+        specifier: ^16.3.0
+        version: 16.3.0
+      jsdom:
+        specifier: catalog:dev
+        version: 26.1.0
+      minimatch:
+        specifier: ^10.0.3
+        version: 10.0.3
+      tailwindcss:
+        specifier: catalog:dev
+        version: 4.1.12
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
+      vite:
+        specifier: catalog:dev
+        version: 7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1)
+      vitest:
+        specifier: catalog:dev
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.1)(@vitest/ui@3.2.4)(jiti@2.5.1)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.8.1)
+
   tooling/eslint:
     dependencies:
       '@pixpilot/antfu-eslint-config':
@@ -502,6 +714,45 @@ importers:
       '@pixpilot/dev-config':
         specifier: catalog:dev
         version: 3.1.2(prettier@3.6.2)(typescript@5.9.2)
+
+  tooling/vite:
+    devDependencies:
+      '@internal/electron-versions':
+        specifier: workspace:*
+        version: link:../../packages/electron-versions
+      '@internal/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint
+      '@internal/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier
+      '@internal/tsconfig':
+        specifier: workspace:*
+        version: link:../typescript
+      '@internal/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest
+      '@tailwindcss/vite':
+        specifier: catalog:dev
+        version: 4.1.13(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      '@types/node':
+        specifier: catalog:dev
+        version: 24.3.1
+      '@vitejs/plugin-react':
+        specifier: catalog:dev
+        version: 5.0.2(vite@7.1.4(@types/node@24.3.1)(jiti@2.5.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      eslint:
+        specifier: catalog:dev
+        version: 9.34.0(jiti@2.5.1)
+      mlly:
+        specifier: 1.8.0
+        version: 1.8.0
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      typescript:
+        specifier: catalog:dev
+        version: 5.9.2
 
   tooling/vitest:
     devDependencies:
@@ -4759,6 +5010,11 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
+  rimraf@6.0.1:
+    resolution: {integrity: sha512-9dkvaxAsk/xNXSJzMgFqqMCuFgt2+KsOFek3TMLfo8NCPfWpBmqwyNn5Y+NX56QUYfCtsyhF3ayiboEoUmJk/A==}
+    engines: {node: 20 || >=22}
+    hasBin: true
+
   roarr@2.15.4:
     resolution: {integrity: sha512-CHhPh+UNHD2GTXNYhPWLnU8ONHdI+5DI+4EYIAOaiD63rHeYlZvyh8P+in5999TTSFgUYuKUAjzRI4mdh/p+2A==}
     engines: {node: '>=8.0'}
@@ -6939,7 +7195,7 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 22.18.1
+      '@types/node': 24.3.1
       '@types/responselike': 1.0.3
 
   '@types/chai@5.2.2':
@@ -6980,7 +7236,7 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 22.18.1
+      '@types/node': 24.3.1
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -7016,7 +7272,7 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 22.18.1
+      '@types/node': 24.3.1
 
   '@types/through@0.0.33':
     dependencies:
@@ -7033,7 +7289,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.18.1
+      '@types/node': 24.3.1
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.42.0(@typescript-eslint/parser@8.42.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2))(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2)':
@@ -10752,6 +11008,11 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
+
+  rimraf@6.0.1:
+    dependencies:
+      glob: 11.0.3
+      package-json-from-dist: 1.0.1
 
   roarr@2.15.4:
     dependencies:

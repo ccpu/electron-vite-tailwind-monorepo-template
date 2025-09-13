@@ -1,6 +1,5 @@
 {
-  "name": "@app/preload",
-  "type": "module",
+  "name": "@app/settings-preload",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -27,7 +26,7 @@
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "@internal/electron-versions": "*",
+    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",

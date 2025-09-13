@@ -1,6 +1,5 @@
 {
   "name": "@app/preload",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -11,10 +10,7 @@
       "default": "./dist/exposed.mjs"
     }
   },
-  "files": [
-    "dist/**",
-    "package.json"
-  ],
+  "files": ["dist/**", "package.json"],
   "scripts": {
     "build": "vite build",
     "clean": "git clean -xdf .cache .turbo node_modules dist",
@@ -27,15 +23,16 @@
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
+    "@app/automation": "workspace:*",
+    "@app/core": "workspace:*",
     "@internal/electron-versions": "*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
-    "@internal/vite": "workspace:*",
     "@internal/vitest-config": "workspace:*",
     "mlly": "1.8.0",
     "typescript": "catalog:dev",
-    "vite": "catalog:dev"
+    "vite": "7.1.4"
   },
   "prettier": "@internal/prettier-config"
 }
