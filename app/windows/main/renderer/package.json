@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@internal/configs": "workspace:*",
+    "@internal/eslint-config": "workspace:*",
     "@internal/ui": "workspace:*",
     "@internal/utils": "workspace:*",
     "react": "catalog:prod",
@@ -35,7 +36,7 @@
     "react-icons": "catalog:prod"
   },
   "devDependencies": {
-    "@internal/eslint-config": "workspace:*",
+    "@internal/ipc": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vite": "workspace:*",

@@ -1,3 +1,3 @@
-# @internal/configs
+# @internal/ipc
 
 ## Usage Add usage instructions here.
