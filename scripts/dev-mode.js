@@ -25,7 +25,7 @@ async function main() {
    */
   const rendererWatchServer = await createServer({
     mode,
-    root: path.resolve('app/renderer'),
+    root: path.resolve('app/windows/main/renderer'),
   });
 
   await rendererWatchServer.listen();
@@ -50,7 +50,11 @@ async function main() {
    */
 
   /** @type {string[]} */
-  const packagesToStart = ['app/preload', 'app/settings-preload', 'app/main'];
+  const packagesToStart = [
+    'app/windows/main/preload',
+    'app/settings-preload',
+    'app/main',
+  ];
 
   for (const pkg of packagesToStart) {
     // eslint-disable-next-line no-await-in-loop

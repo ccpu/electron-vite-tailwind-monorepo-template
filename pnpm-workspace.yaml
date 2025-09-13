@@ -1,6 +1,7 @@
 packages:
   - packages/*
-  - app/*
+  - app/main
+  - app/windows/*/*
   - tooling/*
 
 catalogs:

@@ -36,11 +36,13 @@ import { fileURLToPath } from 'node:url';
           ? new URL(process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173')
           : {
               path: fileURLToPath(
-                new URL('../app/renderer/dist/index.html', import.meta.url),
+                new URL('../app/windows/main/renderer/dist/index.html', import.meta.url),
               ),
             },
       preload: {
-        path: fileURLToPath(new URL('../app/preload/dist/exposed.mjs', import.meta.url)),
+        path: fileURLToPath(
+          new URL('../app/windows/main/preload/dist/exposed.mjs', import.meta.url),
+        ),
       },
     },
     settings: {
