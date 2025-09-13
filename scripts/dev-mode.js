@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-properties */
-/* eslint-disable no-await-in-loop */
 
 import path from 'node:path';
 import process from 'node:process';
@@ -51,9 +50,10 @@ async function main() {
    */
 
   /** @type {string[]} */
-  const packagesToStart = ['app/preload', 'app/main'];
+  const packagesToStart = ['app/preload', 'app/settings-preload', 'app/main'];
 
   for (const pkg of packagesToStart) {
+    // eslint-disable-next-line no-await-in-loop
     await build({
       mode,
       root: path.resolve(pkg),

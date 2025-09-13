@@ -54,6 +54,12 @@ export default async () => {
       output: 'dist',
       buildResources: 'buildResources',
     },
+    extraResources: [
+      {
+        from: 'app/settings-renderer/settings.html',
+        to: 'app/settings-renderer/settings.html',
+      },
+    ],
     generateUpdatesFilesForAllChannels: true,
     linux: {
       target: ['deb'],
