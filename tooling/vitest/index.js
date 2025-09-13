@@ -1,2 +1,5 @@
-export { default as lib } from './lib.js';
-export { default as react } from './react.js';
+import lib from './lib.js';
+import react from './react.js';
+
+export default lib;
+export { lib, react };

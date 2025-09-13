@@ -1,5 +1,5 @@
+import { appConfig } from '@internal/configs';
 import { ThemeProvider } from '@internal/ui';
-import { appConfig } from './config';
 
 function App() {
   return (

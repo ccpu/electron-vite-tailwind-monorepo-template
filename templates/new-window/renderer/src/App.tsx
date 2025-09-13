@@ -1,4 +1,4 @@
-import { appConfig } from './config';
+import { appConfig } from '@internal/configs';
 import { ThemeProvider } from './theme-provider';
 
 function App() {

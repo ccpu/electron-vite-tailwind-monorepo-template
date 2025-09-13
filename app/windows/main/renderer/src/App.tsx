@@ -1,8 +1,8 @@
+import { appConfig } from '@internal/configs';
 import { ThemeProvider } from '@internal/ui';
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import { NotificationDemoCard } from './components/NotificationDemoCard';
-import { appConfig } from './config';
 
 import viteLogo from '/vite.svg';
 

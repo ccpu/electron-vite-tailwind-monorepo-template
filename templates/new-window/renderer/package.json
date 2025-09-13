@@ -27,6 +27,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@internal/configs": "workspace:*",
     "@internal/ui": "workspace:*",
     "@internal/utils": "workspace:*",
     "react": "catalog:prod",
