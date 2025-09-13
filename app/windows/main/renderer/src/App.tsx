@@ -44,7 +44,7 @@ function App() {
             </div>
 
             <h2 className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-              Vite + Reacts
+              Vite + React
             </h2>
 
             <div className="bg-card rounded-lg border p-6 shadow-sm">
