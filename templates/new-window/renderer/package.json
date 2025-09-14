@@ -32,8 +32,7 @@
     "@internal/ui": "workspace:*",
     "@internal/utils": "workspace:*",
     "react": "catalog:prod",
-    "react-dom": "catalog:prod",
-    "react-icons": "catalog:prod"
+    "react-dom": "catalog:prod"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",

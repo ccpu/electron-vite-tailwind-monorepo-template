@@ -660,9 +660,6 @@ importers:
       react-dom:
         specifier: catalog:prod
         version: 19.1.1(react@19.1.1)
-      react-icons:
-        specifier: catalog:prod
-        version: 5.5.0(react@19.1.1)
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*
