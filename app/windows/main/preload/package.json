@@ -26,10 +26,12 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui"
   },
+  "dependencies": {
+    "@internal/ipc": "workspace:*"
+  },
   "devDependencies": {
     "@internal/electron-versions": "*",
     "@internal/eslint-config": "workspace:*",
-    "@internal/ipc": "*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vite": "workspace:*",

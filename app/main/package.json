@@ -24,12 +24,12 @@
   },
   "dependencies": {
     "@app/preload": "*",
-    "@app/renderer": "*"
+    "@app/renderer": "*",
+    "@internal/ipc": "workspace:*"
   },
   "devDependencies": {
     "@internal/electron-versions": "*",
     "@internal/eslint-config": "workspace:*",
-    "@internal/ipc": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vitest-config": "workspace:*",
