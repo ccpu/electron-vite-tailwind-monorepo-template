@@ -1,7 +1,6 @@
-import { notificationIpc } from '@internal/ipc';
+import { createNotificationIpcWithRenderer } from '@internal/ipc';
+import { ipcRenderer } from 'electron';
 
-const ipcApi = {
-  ...notificationIpc,
-};
+const ipcApi = createNotificationIpcWithRenderer(ipcRenderer);
 
 export { ipcApi };
