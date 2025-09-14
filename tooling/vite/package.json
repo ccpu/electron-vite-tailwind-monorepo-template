@@ -11,14 +11,12 @@
     "./preload": "./preload.mjs"
   },
   "scripts": {
-    "prepublishOnly": "pnpm run clean && pnpm run build",
-    "clean": "rimraf dist",
-    "build": "pnpm run clean && tsc -b",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
