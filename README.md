@@ -57,11 +57,12 @@ tooling/             # Development tools
 ### Adding New Windows
 
 ```bash
-# Copy template
-cp -r templates/new-window app/windows/your-window-name
+# Create new window (interactive)
+pnpm create-window
 
-# Replace placeholders and start development
-pnpm start
+# Or specify name directly
+pnpm create-window about
+pnpm create-window settings
 ```
 
 ### Opening Windows
