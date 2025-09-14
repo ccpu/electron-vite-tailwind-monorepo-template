@@ -182,6 +182,9 @@ importers:
       '@internal/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint
+      '@internal/ipc':
+        specifier: workspace:*
+        version: link:../../packages/ipc
       '@internal/prettier-config':
         specifier: workspace:*
         version: link:../../tooling/prettier
