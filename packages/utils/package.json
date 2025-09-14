@@ -11,8 +11,6 @@
   "scripts": {
     "dev": "tsc --watch",
     "type-check": "tsc --noEmit",
-    "build": "tsc",
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "lint": "eslint",

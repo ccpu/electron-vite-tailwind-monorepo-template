@@ -1,5 +1,5 @@
+import { electronAPI } from '@internal/ipc';
 import { useState } from 'react';
-import { electronAPI } from '../electron-api';
 
 export function NotificationDemoCard() {
   const [customTitle, setCustomTitle] = useState('My App');
