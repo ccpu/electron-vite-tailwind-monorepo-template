@@ -1,4 +1,3 @@
-import { electronAPI } from '@internal/ipc';
 import { useState } from 'react';
 
 export function NotificationDemoCard() {
@@ -12,7 +11,10 @@ export function NotificationDemoCard() {
   const handleCustomNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await electronAPI.showNotification(customTitle, customMessage);
+      const result = await window.appApi.invoke.showNotification(
+        customTitle,
+        customMessage,
+      );
       setLastResult(
         result.success ? 'Custom notification sent!' : `Failed: ${result.message}`,
       );
@@ -26,7 +28,7 @@ export function NotificationDemoCard() {
   const handleSimpleNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await electronAPI.notifyMessage(simpleMessage);
+      const result = await window.appApi.invoke.notifyMessage(simpleMessage);
       setLastResult(
         result.success ? 'Message notification sent!' : `Failed: ${result.message}`,
       );
@@ -40,7 +42,7 @@ export function NotificationDemoCard() {
   const handleInfoNotification = async () => {
     try {
       setIsLoading(true);
-      const result = await electronAPI.notifyInfo(infoMessage);
+      const result = await window.appApi.invoke.notifyInfo(infoMessage);
       setLastResult(
         result.success ? 'Info notification sent!' : `Failed: ${result.message}`,
       );
@@ -63,18 +65,6 @@ export function NotificationDemoCard() {
   const onInfoClick = () => {
     handleInfoNotification().catch(console.error);
   };
-
-  if (!electronAPI.isElectron()) {
-    return (
-      <div className="bg-card rounded-lg border p-6 shadow-sm">
-        <h3 className="mb-4 text-lg font-semibold">📢 Notification Demo</h3>
-        <p className="text-muted-foreground">
-          This demo is only available when running in Electron. You're currently viewing
-          this in a browser.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-card rounded-lg border p-6 shadow-sm">

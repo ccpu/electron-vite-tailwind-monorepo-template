@@ -5,6 +5,7 @@ import type { ModuleContext } from '../ModuleContext.js';
 import type { WindowConfig } from '../types/common.js';
 import process from 'node:process';
 
+import { appApi } from '@internal/ipc';
 import { BrowserWindow, ipcMain, Menu, MenuItem, shell } from 'electron';
 import { WindowStateManager } from './WindowStateManager';
 
@@ -57,6 +58,8 @@ class WindowManager implements AppModule {
 
     // Focus existing main window if a second instance is started
     app.on('second-instance', () => this.restoreOrCreateWindow(true));
+
+    appApi.registerMainHandlers(ipcMain);
 
     // Set up the IPC handler to listen for requests to open new windows
     ipcMain.handle('open-window', async (_event, windowName: string) => {

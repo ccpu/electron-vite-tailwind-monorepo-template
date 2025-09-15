@@ -1,6 +1,5 @@
-import { createNotificationIpcWithRenderer } from '@internal/ipc';
-import { ipcRenderer } from 'electron';
+// import { appApi } from '@internal/ipc';
+// import { contextBridge, ipcRenderer } from 'electron';
 
-const ipcApi = createNotificationIpcWithRenderer(ipcRenderer);
-
-export { ipcApi };
+// const appApiIpc = appApi.exposeInPreload(ipcRenderer);
+// contextBridge.exposeInMainWorld('appApi', appApiIpc);
