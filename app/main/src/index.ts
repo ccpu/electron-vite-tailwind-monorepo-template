@@ -11,14 +11,12 @@ import { createWindowManagerModule } from './modules/WindowManager';
 
 export async function initApp(initConfig: AppInitConfig): Promise<void> {
   const moduleRunner = createModuleRunner()
+    .init(createIpcNotificationModule())
     .init(createWindowManagerModule({ initConfig, openDevTools: import.meta.env.DEV }))
     .init(disallowMultipleAppInstance())
     .init(terminateAppOnLastWindowClose())
     .init(hardwareAccelerationMode({ enable: false }))
     .init(autoUpdater())
-
-    // IPC Notification module
-    .init(createIpcNotificationModule())
 
     // Install DevTools extension if needed
     // .init(chromeDevToolsExtension({extension: 'VUEJS3_DEVTOOLS'}))

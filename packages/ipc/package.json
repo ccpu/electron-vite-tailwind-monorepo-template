@@ -12,7 +12,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "clean:all": "git clean -xdf .cache .turbo dist node_modules",
+    "clean": "git clean -xdf .cache .turbo dist",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
@@ -22,7 +23,8 @@
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore"
   },
   "dependencies": {
-    "change-case": "^5.4.4"
+    "change-case": "^5.4.4",
+    "electron-ipc-typesafe": "^1.1.0"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",

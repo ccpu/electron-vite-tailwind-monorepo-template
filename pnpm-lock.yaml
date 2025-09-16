@@ -507,6 +507,9 @@ importers:
       change-case:
         specifier: ^5.4.4
         version: 5.4.4
+      electron-ipc-typesafe:
+        specifier: ^1.1.0
+        version: 1.1.0
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*
@@ -2847,6 +2850,9 @@ packages:
 
   electron-devtools-installer@4.0.0:
     resolution: {integrity: sha512-9Tntu/jtfSn0n6N/ZI6IdvRqXpDyLQiDuuIbsBI+dL+1Ef7C8J2JwByw58P3TJiNeuqyV3ZkphpNWuZK5iSY2w==}
+
+  electron-ipc-typesafe@1.1.0:
+    resolution: {integrity: sha512-Jk9ybXzURKtq3ov1u+gN4EBtfnNNAvWKyULsiEb+s/HSyNFCom1PbS+BMJnzp/6uU+122kIvvKjyNIBQN7NOKw==}
 
   electron-publish@26.0.11:
     resolution: {integrity: sha512-a8QRH0rAPIWH9WyyS5LbNvW9Ark6qe63/LqDB7vu2JXYpi0Gma5Q60Dh4tmTqhOBQt0xsrzD8qE7C+D7j+B24A==}
@@ -8366,6 +8372,10 @@ snapshots:
   electron-devtools-installer@4.0.0:
     dependencies:
       unzip-crx-3: 0.2.0
+
+  electron-ipc-typesafe@1.1.0:
+    dependencies:
+      change-case: 5.4.4
 
   electron-publish@26.0.11:
     dependencies:

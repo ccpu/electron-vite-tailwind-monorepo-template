@@ -16,7 +16,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "clean:all": "git clean -xdf .cache .turbo dist node_modules",
+    "clean": "git clean -xdf .cache .turbo dist",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "format:fix": "prettier --write . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "lint": "eslint",
