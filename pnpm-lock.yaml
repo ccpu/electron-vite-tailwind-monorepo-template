@@ -121,6 +121,12 @@ importers:
       '@types/node':
         specifier: catalog:dev
         version: 24.3.1
+      '@vitest/coverage-v8':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: catalog:dev
+        version: 3.2.4(vitest@3.2.4)
       create-vite:
         specifier: 7.1.1
         version: 7.1.1
