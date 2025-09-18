@@ -1,6 +1,8 @@
 /**
  * Format a date to a readable string
  */
+const MILLISECONDS_PER_SECOND = 1000;
+
 export function formatDate(date: Date, options?: Intl.DateTimeFormatOptions): string {
   const defaultOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -16,7 +18,9 @@ export function formatDate(date: Date, options?: Intl.DateTimeFormatOptions): st
  */
 export function getRelativeTime(date: Date): string {
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - date.getTime()) / MILLISECONDS_PER_SECOND,
+  );
 
   const intervals = [
     { label: 'year', seconds: 31536000 },

@@ -30,6 +30,7 @@
   "dependencies": {
     "@internal/configs": "workspace:*",
     "@internal/ipc": "workspace:*",
+    "@internal/tailwind": "workspace:*",
     "@internal/ui": "workspace:*",
     "@internal/utils": "workspace:*",
     "react": "catalog:prod",
@@ -54,7 +55,6 @@
     "globals": "^16.4.0",
     "jsdom": "catalog:dev",
     "minimatch": "^10.0.3",
-    "tailwindcss": "catalog:dev",
     "typescript": "catalog:dev",
     "vite": "catalog:dev",
     "vitest": "catalog:dev"
