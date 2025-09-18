@@ -33,13 +33,29 @@ class WindowManager implements AppModule {
   async enable({ app }: ModuleContext): Promise<void> {
     const mainWindow = await this.#windowManager.init({ app });
 
+    appApi.registerHandler('open-window', async (_event, windowName, options) => {
+      try {
+        await this.#windowManager.createWindow(windowName, options);
+        return { success: true, message: `Window "${windowName}" opened successfully.` };
+      } catch (error) {
+        console.error(`Failed to open window "${windowName}":`, error);
+        return {
+          success: false,
+          message: `Failed to open window "${windowName}": ${error}`,
+        };
+      }
+    });
+
     appApi.registerMainHandlers(ipcMain);
 
     this.createMenus(mainWindow);
   }
 
-  private async createWindow(windowName: string): Promise<void> {
-    const browserWindow = await this.#windowManager.createWindow(windowName);
+  private async createWindow(
+    windowName: string,
+    options?: Electron.BrowserWindowConstructorOptions,
+  ): Promise<void> {
+    const browserWindow = await this.#windowManager.createWindow(windowName, options);
     this.createMenus(browserWindow);
   }
 

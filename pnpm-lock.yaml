@@ -191,8 +191,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ipc
       electron-window-toolkit:
-        specifier: ^1.3.0
-        version: 1.3.0(electron@38.0.0)
+        specifier: ^1.4.0
+        version: 1.4.0(electron@38.0.0)
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*
@@ -2908,8 +2908,8 @@ packages:
     resolution: {integrity: sha512-mJJ8cM5I2CRZ1xufgJU20DfCfc0PsJ5hQ+mWp+/EPFr4lOM9OxAyRxbFlipRBKoOXCx3CwJYi5OWYsQuH8ZQFQ==}
     hasBin: true
 
-  electron-window-toolkit@1.3.0:
-    resolution: {integrity: sha512-tD22YLShTXT63oXb9D99HZlmiiTKipaREsj2wwjtnMypnM28lfZ1946fJM1G9yg5eX73FZ9CVriBaNYDYr1dKw==}
+  electron-window-toolkit@1.4.0:
+    resolution: {integrity: sha512-x5g/o1ZJxNvXyTohlXdYgXSPEgC7iSfnijhcAy2CPWgybZevmNEgHx40gRYQbfeDkGDNlaxEFo/M4CbgocNsFg==}
     peerDependencies:
       electron: '>=18.0.0'
 
@@ -8565,8 +8565,9 @@ snapshots:
       electron-utilities: 0.0.1
       mlly: 1.8.0
 
-  electron-window-toolkit@1.3.0(electron@38.0.0):
+  electron-window-toolkit@1.4.0(electron@38.0.0):
     dependencies:
+      '@fastify/deepmerge': 3.1.0
       electron: 38.0.0
 
   electron-winstaller@5.4.0:

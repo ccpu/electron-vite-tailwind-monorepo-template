@@ -1,6 +1,8 @@
 import { appConfig } from '@internal/configs';
+import { appApi } from '@internal/ipc';
 import { ThemeProvider } from '@internal/ui';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { MdSettings } from 'react-icons/md';
 import reactLogo from './assets/react.svg';
 import { NotificationDemoCard } from './components/NotificationDemoCard';
 
@@ -8,6 +10,15 @@ import viteLogo from '/vite.svg';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const handleSettingClick = useCallback(() => {
+    // eslint-disable-next-line ts/no-floating-promises
+    appApi.invoke.openWindow('settings').then((response) => {
+      if (!response.success) {
+        console.error('Failed to open settings window:', response.message);
+      }
+    });
+  }, []);
 
   return (
     <ThemeProvider defaultTheme={appConfig.theme.defaultTheme}>
@@ -74,6 +85,15 @@ function App() {
 
             {/* Notification Demo */}
             <NotificationDemoCard />
+
+            {/* Settings Button */}
+            <button
+              type="button"
+              onClick={handleSettingClick}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 absolute top-4 right-4 flex cursor-pointer items-center space-x-2 rounded-full p-2 transition-colors"
+            >
+              <MdSettings className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>
