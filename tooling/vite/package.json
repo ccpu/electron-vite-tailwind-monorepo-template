@@ -32,7 +32,6 @@
     "electron-vite-toolkit": "catalog:dev",
     "eslint": "catalog:dev",
     "mlly": "1.8.0",
-    "rimraf": "^6.0.1",
     "typescript": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"

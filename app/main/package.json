@@ -36,8 +36,7 @@
     "electron": "catalog:dev",
     "electron-devtools-installer": "4.0.0",
     "typescript": "catalog:dev",
-    "vite": "catalog:dev",
-    "vite-plugin-commonjs-externals": "0.1.4"
+    "vite": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"
 }

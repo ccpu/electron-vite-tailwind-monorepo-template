@@ -33,7 +33,7 @@
     },
     "typecheck": {
       "dependsOn": ["^topo", "^build"],
-      "outputs": [".cache/tsbuildinfo.json"]
+      "outputs": []
     },
     "clean:all": {
       "cache": false
