@@ -35,7 +35,6 @@
     "@internal/tsconfig": "workspace:*",
     "@internal/vite": "workspace:*",
     "@internal/vitest-config": "workspace:*",
-    "mlly": "1.8.0",
     "typescript": "catalog:dev",
     "vite": "catalog:dev"
   },

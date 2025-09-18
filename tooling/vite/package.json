@@ -31,7 +31,6 @@
     "@vitejs/plugin-react": "catalog:dev",
     "electron-vite-toolkit": "catalog:dev",
     "eslint": "catalog:dev",
-    "mlly": "1.8.0",
     "typescript": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"
