@@ -25,10 +25,10 @@
   "dependencies": {
     "@app/preload": "workspace:*",
     "@app/renderer": "workspace:*",
-    "@internal/ipc": "workspace:*"
+    "@internal/ipc": "workspace:*",
+    "electron-window-toolkit": "^1.3.0"
   },
   "devDependencies": {
-    "@internal/electron-versions": "workspace:*",
     "@internal/eslint-config": "workspace:*",
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
