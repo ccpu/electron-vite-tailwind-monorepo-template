@@ -26,7 +26,7 @@
     "@app/preload": "workspace:*",
     "@app/renderer": "workspace:*",
     "@internal/ipc": "workspace:*",
-    "electron-window-toolkit": "^1.4.0"
+    "electron-window-toolkit": "^1.4.1"
   },
   "devDependencies": {
     "@internal/eslint-config": "workspace:*",
