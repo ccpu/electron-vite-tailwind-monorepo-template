@@ -8,7 +8,7 @@ import type { WindowConfig } from '../types/common.js';
 import { appApi } from '@internal/ipc';
 
 import { ipcMain, Menu, MenuItem, shell } from 'electron';
-import { WindowManager } from 'electron-window-toolkit';
+import { WindowManager as WindowManagerHelper } from 'electron-window-toolkit';
 
 /**
  * The expected shape of the initConfig object for the WindowManager.
@@ -17,8 +17,8 @@ interface WindowManagerInitConfig extends AppInitConfig {
   windows: Record<string, WindowConfig>;
 }
 
-class MainWindowManager implements AppModule {
-  readonly #windowManager: WindowManager;
+class WindowManager implements AppModule {
+  readonly #windowManager: WindowManagerHelper;
 
   constructor({
     initConfig,
@@ -27,7 +27,7 @@ class MainWindowManager implements AppModule {
     initConfig: WindowManagerInitConfig;
     openDevTools?: boolean;
   }) {
-    this.#windowManager = new WindowManager({ initConfig, openDevTools });
+    this.#windowManager = new WindowManagerHelper({ initConfig, openDevTools });
   }
 
   async enable({ app }: ModuleContext): Promise<void> {
@@ -132,7 +132,7 @@ class MainWindowManager implements AppModule {
 }
 
 export function createWindowManagerModule(
-  ...args: ConstructorParameters<typeof MainWindowManager>
-): MainWindowManager {
-  return new MainWindowManager(...args);
+  ...args: ConstructorParameters<typeof WindowManager>
+): WindowManager {
+  return new WindowManager(...args);
 }

@@ -35,6 +35,7 @@
     "@internal/vitest-config": "workspace:*",
     "electron": "catalog:dev",
     "electron-devtools-installer": "4.0.0",
+    "electron-vite-toolkit": "catalog:dev",
     "typescript": "catalog:dev",
     "vite": "catalog:dev"
   },
