@@ -90,7 +90,7 @@ function App() {
             <button
               type="button"
               onClick={handleSettingClick}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 absolute top-4 right-4 flex cursor-pointer items-center space-x-2 rounded-full p-2 transition-colors"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 absolute right-4 top-4 flex cursor-pointer items-center space-x-2 rounded-full p-2 transition-colors"
             >
               <MdSettings className="h-5 w-5" />
             </button>
