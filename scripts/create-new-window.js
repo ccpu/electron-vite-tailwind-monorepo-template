@@ -11,6 +11,7 @@
  *   npm run create-window [window-name]
  */
 
+const { execSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const process = require('node:process');
@@ -379,9 +380,20 @@ async function main() {
     colorLog(`   📍 Location: ${targetDir}`, 'gray');
     colorLog(`   📝 Updated ${successCount}/${filesToUpdate.length} files`, 'gray');
     console.log('');
+
+    colorLog('📦 Installing dependencies...', 'blue');
+    try {
+      execSync('pnpm install', { cwd: targetDir, stdio: 'inherit' });
+      colorLog('✅ Dependencies installed successfully', 'green');
+    } catch (error) {
+      colorLog(`❌ Failed to install dependencies: ${error.message}`, 'red');
+      process.exit(1);
+    }
+    console.log('');
+
     colorLog('🎯 Next steps:', 'cyan');
     colorLog('   1. Customize the React content in renderer/src/App.tsx', 'white');
-    colorLog("   2. Run 'pnpm install' to install dependencies", 'white');
+    colorLog('   2. Dependencies are already installed - you can skip this step', 'gray');
     colorLog("   3. Run 'pnpm run dev' to start development", 'white');
     colorLog(
       `   4. Open the window via IPC: window.electronAPI.invoke('open-window', '${windowName}')`,
