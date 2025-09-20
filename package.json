@@ -64,7 +64,8 @@
   },
   "dependencies": {
     "@manypkg/get-packages": "^3.1.0",
-    "electron-updater": "^6.6.2"
+    "electron-updater": "^6.6.2",
+    "electron-window-toolkit": "catalog:prod"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
