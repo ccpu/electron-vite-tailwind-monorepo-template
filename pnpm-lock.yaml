@@ -40,8 +40,8 @@ catalogs:
       specifier: ^3.2.4
       version: 3.2.4
     electron:
-      specifier: 38.0.0
-      version: 38.0.0
+      specifier: 38.2.0
+      version: 38.2.0
     electron-vite-toolkit:
       specifier: ^0.6.0
       version: 0.6.0
@@ -95,7 +95,7 @@ importers:
         version: 6.6.2
       electron-window-toolkit:
         specifier: catalog:prod
-        version: 1.4.1(electron@38.0.0)
+        version: 1.4.1(electron@38.2.0)
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.8.1
@@ -138,7 +138,7 @@ importers:
         version: 7.1.1
       electron:
         specifier: catalog:dev
-        version: 38.0.0
+        version: 38.2.0
       electron-builder:
         specifier: 26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
@@ -195,7 +195,7 @@ importers:
         version: link:../../packages/ipc
       electron-window-toolkit:
         specifier: catalog:prod
-        version: 1.4.1(electron@38.0.0)
+        version: 1.4.1(electron@38.2.0)
     devDependencies:
       '@internal/eslint-config':
         specifier: workspace:*
@@ -211,7 +211,7 @@ importers:
         version: link:../../tooling/vitest
       electron:
         specifier: catalog:dev
-        version: 38.0.0
+        version: 38.2.0
       electron-devtools-installer:
         specifier: 4.0.0
         version: 4.0.0
@@ -2945,8 +2945,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@38.0.0:
-    resolution: {integrity: sha512-egljptiPJqbL/oamFCEY+g3RNeONWTVxZSGeyLqzK8xq106JhzuxnhJZ3sxt4DzJFaofbGyGJA37Oe9d+gVzYw==}
+  electron@38.2.0:
+    resolution: {integrity: sha512-Cw5Mb+N5NxsG0Hc1qr8I65Kt5APRrbgTtEEn3zTod30UNJRnAE1xbGk/1NOaDn3ODzI/MYn6BzT9T9zreP7xWA==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -8583,10 +8583,10 @@ snapshots:
       electron-utilities: 0.0.1
       mlly: 1.8.0
 
-  electron-window-toolkit@1.4.1(electron@38.0.0):
+  electron-window-toolkit@1.4.1(electron@38.2.0):
     dependencies:
       '@fastify/deepmerge': 3.1.0
-      electron: 38.0.0
+      electron: 38.2.0
 
   electron-winstaller@5.4.0:
     dependencies:
@@ -8600,7 +8600,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@38.0.0:
+  electron@38.2.0:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 22.18.1
