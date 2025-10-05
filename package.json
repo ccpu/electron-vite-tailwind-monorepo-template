@@ -46,7 +46,7 @@
     "test:ui": "vitest --ui",
     "test:e2e": "pnpm run compile && npx playwright test ./tests/e2e.spec.ts",
     "typecheck": "turbo run typecheck",
-    "tsc:watch": "tsc --noEmit --watch --project tsconfig.json",
+    "tsc:watch": "pnpm exec tsc --noEmit --watch --project tsconfig.watch.json",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "pnpm format --write",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache && pnpm lint:root",
