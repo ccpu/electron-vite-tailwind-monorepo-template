@@ -9,7 +9,6 @@
     "./react": "./react.js"
   },
   "main": "./index.js",
-  "types": "./dist/vitest/index.d.ts",
   "scripts": {
     "clean:all": "git clean -xdf .cache .turbo dist node_modules",
     "clean": "git clean -xdf .cache .turbo dist",
