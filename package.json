@@ -38,6 +38,7 @@
     "pnpm": ">=9.6.0"
   },
   "scripts": {
+    "setup": "npx @pixpilot/scaffoldfy --config ./setup/scaffoldfy.json",
     "start": "electron-vite-toolkit start",
     "build": "turbo run build",
     "create-window": "node scripts/create-new-window.js",
