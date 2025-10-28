@@ -1,4 +1,4 @@
-# Contributing to Electron Vite Monorepo Template
+# Contributing to <project-name>
 
 Thank you for your interest in contributing! 🎉
 

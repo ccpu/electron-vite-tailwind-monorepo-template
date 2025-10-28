@@ -29,8 +29,8 @@
         "file": "CONTRIBUTING.md",
         "replacements": [
           {
-            "find": "chrome-extension-monorepo-template",
-            "replace": "{{repoName}}"
+            "find": "<project-name>",
+            "replace": "{{projectName}}"
           }
         ]
       }
