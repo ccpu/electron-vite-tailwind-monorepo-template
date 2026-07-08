@@ -7,8 +7,14 @@
   "author": "",
   "license": "MIT",
   "exports": {
-    "./renderer": "./renderer.mjs",
-    "./preload": "./preload.mjs",
+    "./renderer": {
+      "types": "./renderer.d.ts",
+      "default": "./renderer.mjs"
+    },
+    "./preload": {
+      "types": "./preload.d.ts",
+      "default": "./preload.mjs"
+    },
     "./types": "./renderer.d.ts"
   },
   "scripts": {
