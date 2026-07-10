@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
 import { getPackages } from '@manypkg/get-packages';
@@ -46,6 +46,18 @@ export default async () => {
     return allFilesToInclude;
   }
 
+  /**
+   * Convert a package name (e.g. "my-app-name") to PascalCase ("MyAppName").
+   * @param {string} name
+   */
+  function toPascalCase(name) {
+    return name
+      .split(/[^a-z0-9]+/iu)
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   const workspaceFiles = await getListOfFilesFromEachWorkspace();
 
   // Build extraResources dynamically for windows excluding main
@@ -72,8 +84,14 @@ export default async () => {
     }
   }
 
+  if (pkg.name === 'react-electron-vite-monorepo-template') {
+    console.log(
+      'Please change the "name" field in package.json to your project name before building the app.',
+    );
+  }
+
   return {
-    productName: 'electron-app',
+    productName: toPascalCase(pkg.name),
     directories: {
       output: 'dist',
       buildResources: 'buildResources',
