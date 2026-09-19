@@ -55,6 +55,8 @@ tooling/             # Development tools
 ├── typescript/      # TS configurations
 ├── vite/           # Vite configurations
 └── vitest/         # Test configurations
+
+buildResources/      # App icon: icon.svg is the source, the rest is generated
 ```
 
 ## 🪟 Multi-Window System
@@ -93,6 +95,24 @@ pnpm test              # Unit tests with Vitest
 pnpm run test:e2e      # E2E tests with Playwright
 ```
 
+### App Icon
+
+`buildResources/icon.svg` is the source the packaged icons come from. Replace it
+with your own square artwork and re-render:
+
+```bash
+pnpm run gen:icons
+```
+
+That writes `icon.png` (1024px, Linux and the fallback everywhere else),
+`icon.ico` (Windows) and `icon.icns` (macOS) next to it, which is where
+electron-builder looks when it dresses the executable and the installer. Each
+window also points its `browser-window-options.mjs` at `icon.png`, so the same
+artwork shows on the window and in the taskbar, including on `pnpm start`.
+
+Chromium does the rasterising, through the Playwright browser the E2E tests
+already install (`npx playwright install chromium`).
+
 ### Environment Variables
 
 ```typescript
@@ -122,6 +142,7 @@ pnpm run test:e2e            # Run E2E tests
 # Building
 pnpm run build               # Build all packages
 pnpm run compile             # Build executable
+pnpm run gen:icons           # Re-render app icons from buildResources/icon.svg
 
 # Code Quality
 pnpm run lint                # Check code quality

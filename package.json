@@ -42,6 +42,7 @@
     "start": "electron-vite-toolkit start",
     "build": "turbo run build",
     "create-window": "node scripts/create-new-window.js",
+    "gen:icons": "node scripts/generate-icons.mjs",
     "compile": "rimraf dist && turbo run build && electron-builder build --config electron-builder.mjs",
     "test": "turbo run test",
     "test:ui": "vitest --ui",

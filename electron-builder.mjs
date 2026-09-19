@@ -111,6 +111,10 @@ export default async () => {
       'LICENSE*',
       pkg.main,
       'scripts/**',
+      // Per-window `BrowserWindow` options are read at runtime, so they have to
+      // ship, along with the icon they point at.
+      'app/windows/*/browser-window-options.mjs',
+      'buildResources/icon.png',
       // Include workspace packages with their dist folders
       ...workspaceFiles,
       // Include all node_modules needed for production
