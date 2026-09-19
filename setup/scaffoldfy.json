@@ -1,6 +1,7 @@
 {
   "$schema": "https://unpkg.com/@pixpilot/scaffoldfy@latest/schema/scaffoldfy.schema.json",
   "extends": [
+    "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/setup-guard/scaffoldfy.json",
     "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/project-info/scaffoldfy.json",
     "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/pixpilot-info/scaffoldfy.json",
     "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/turbo-workspace-package-generator/scaffoldfy.json",
@@ -8,7 +9,8 @@
     "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/update-root-package-json/scaffoldfy.json",
     "https://unpkg.com/@pixpilot/scaffoldfy-configs@latest/pixpilot-copilot-instructions/scaffoldfy.json"
   ],
-  "name": "chrome-extension-monorepo-template-setup",
+  "name": "electron-vite-tailwind-monorepo-template-setup",
+  "description": "Initial setup for the Electron + Vite + Tailwind monorepo template. The shared setup-guard config strips the one-time gate; this config deletes setup/ afterwards, once clean-readme has read its template from there.",
   "tasks": [
     {
       "id": "clean-readme",
@@ -36,21 +38,9 @@
       }
     },
     {
-      "id": "remove-setup-script",
-      "name": "Remove setup script",
-      "description": "Remove the setup script from package.json after setup is complete",
-      "type": "regex-replace",
-      "config": {
-        "file": "package.json",
-        "pattern": "\\n\\s*\"setup\":\\s*\"npx @pixpilot/scaffoldfy --config \\./setup/scaffoldfy\\.json\",",
-        "flags": "",
-        "replacement": ""
-      }
-    },
-    {
-      "id": "delete-setup-tasks",
-      "name": "Delete setup tasks file",
-      "description": "Remove the setup-tasks.json file after setup is complete",
+      "id": "delete-setup-folder",
+      "name": "Delete setup folder",
+      "description": "Remove the guard, this config and its templates -- placed after clean-readme, which reads setup/templates/clean-readme.hbs",
       "type": "delete",
       "config": {
         "paths": ["setup"]
@@ -59,11 +49,12 @@
     {
       "id": "install-dependencies",
       "name": "Install dependencies",
-      "description": "Install dependencies after cleanup",
+      "description": "Run last, after the gate is gone, so the removed postinstall guard is not re-triggered",
       "type": "exec",
       "config": {
         "command": "pnpm install"
-      }
+      },
+      "dependencies": ["delete-setup-folder"]
     }
   ]
 }

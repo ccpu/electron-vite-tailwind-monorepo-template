@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@10.34.5",
   "author": "",
   "license": "MIT",
   "exports": {
@@ -33,12 +33,14 @@
     "@internal/prettier-config": "workspace:*",
     "@internal/tsconfig": "workspace:*",
     "@internal/vitest-config": "workspace:*",
+    "@pixpilot/vite-plugin-source-inspector": "catalog:dev",
     "@tailwindcss/vite": "catalog:dev",
     "@types/node": "catalog:dev",
     "@vitejs/plugin-react": "catalog:dev",
     "electron-vite-toolkit": "catalog:dev",
     "eslint": "catalog:dev",
-    "typescript": "catalog:dev"
+    "typescript": "catalog:dev",
+    "vite": "catalog:dev"
   },
   "prettier": "@internal/prettier-config"
 }

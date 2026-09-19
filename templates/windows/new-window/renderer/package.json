@@ -52,9 +52,9 @@
     "@vitest/coverage-v8": "catalog:dev",
     "@vitest/ui": "catalog:dev",
     "eslint": "catalog:dev",
-    "globals": "^16.4.0",
+    "globals": "^16.5.0",
     "jsdom": "catalog:dev",
-    "minimatch": "^10.0.3",
+    "minimatch": "^10.2.6",
     "typescript": "catalog:dev",
     "vite": "catalog:dev",
     "vitest": "catalog:dev"

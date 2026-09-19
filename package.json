@@ -2,7 +2,7 @@
   "name": "react-electron-vite-monorepo-template",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@10.34.5",
   "description": "Modern React Electron application template with pnpm monorepo, Turbo, Vite, TypeScript, Tailwind CSS, and Vitest - specifically designed for React applications",
   "author": {
     "email": "your-email@example.com",
@@ -61,11 +61,12 @@
     "deps:update": "npx taze -r -w && pnpm install",
     "deps:update:major": "npx taze major -r -w && pnpm install",
     "gen:package": "npx @pixpilot/scaffoldfy --config ./generators/package/scaffoldfy.json",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node setup/guard.mjs warn"
   },
   "dependencies": {
     "@manypkg/get-packages": "^3.1.0",
-    "electron-updater": "^6.6.2",
+    "electron-updater": "^6.8.9",
     "electron-window-toolkit": "catalog:prod"
   },
   "devDependencies": {
@@ -77,7 +78,7 @@
     "@pixpilot/dev-config": "catalog:dev",
     "@pixpilot/workspace-package-generator": "^1.1.5",
     "@playwright/test": "1.55.0",
-    "@turbo/gen": "^2.5.6",
+    "@turbo/gen": "^2.11.2",
     "@types/node": "catalog:dev",
     "@vitest/coverage-v8": "catalog:dev",
     "@vitest/ui": "catalog:dev",
@@ -88,21 +89,16 @@
     "eslint": "catalog:dev",
     "glob": "11.0.3",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
-    "playwright": "^1.55.0",
+    "lint-staged": "^16.4.0",
+    "playwright": "^1.63.0",
     "prettier": "catalog:dev",
     "prettier-plugin-tailwindcss": "catalog:dev",
     "rimraf": "catalog:dev",
-    "turbo": "^2.5.6",
+    "turbo": "^2.11.2",
     "typescript": "catalog:dev",
     "typescript-eslint": "catalog:dev",
     "vite": "catalog:dev",
     "vitest": "catalog:dev"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "electron"
-    ]
   },
   "prettier": "@internal/prettier-config"
 }

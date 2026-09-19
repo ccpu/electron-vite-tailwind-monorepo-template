@@ -20,8 +20,8 @@ A modern, secure React Electron application template built with **pnpm monorepo*
 git clone https://github.com/ccpu/electron-vite-tailwind-monorepo-template.git
 cd electron-vite-tailwind-monorepo-template
 
-# Install dependencies
-pnpm install
+# Initialize the template for your project (installs dependencies too)
+pnpm run setup
 
 # Start development
 pnpm start
@@ -29,6 +29,11 @@ pnpm start
 # Build for production
 pnpm run compile
 ```
+
+This is a one-time step. Until `pnpm run setup` has run, `pnpm install` prints a
+reminder and `git commit` is blocked. Setup ends by deleting the `setup/` folder,
+so the gate removes itself. It is skipped in CI, in this template repo itself, and
+with `SKIP_SETUP_CHECK=1`.
 
 ## 📁 Project Structure
 
