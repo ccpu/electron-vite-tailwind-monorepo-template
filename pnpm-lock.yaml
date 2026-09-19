@@ -99,6 +99,9 @@ importers:
       electron-updater:
         specifier: ^6.8.9
         version: 6.8.9
+      electron-vite-toolkit:
+        specifier: catalog:dev
+        version: 0.6.0
       electron-window-toolkit:
         specifier: catalog:prod
         version: 4.3.1(electron@38.0.0)
@@ -148,9 +151,6 @@ importers:
       electron-builder:
         specifier: 26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
-      electron-vite-toolkit:
-        specifier: catalog:dev
-        version: 0.6.0
       eslint:
         specifier: catalog:dev
         version: 9.36.0(jiti@2.7.0)
