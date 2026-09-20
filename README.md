@@ -4,7 +4,7 @@ A modern, secure React Electron application template built with **pnpm monorepo*
 
 ## ✨ Tech Stack
 
-- **⚡ Vite** - Lightning fast build tool
+
 - **⚛️ React 19** - Latest React with modern features
 - **🏗️ TypeScript** - Type safety and better DX
 - **🎨 Tailwind CSS v4** - Utility-first CSS framework
