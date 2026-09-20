@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/compare/v1.0.2...v1.0.3) (2026-09-20)
+
+
+### Bug Fixes
+
+* **eslint:** update type definitions from 'typescript-eslint' to 'eslint' ([399f88f](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/commit/399f88feb5d814007c227b2d34ac0e7a4a36d850))
+
 ## [1.0.2](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/compare/v1.0.1...v1.0.2) (2026-09-20)
 
 
