@@ -1,0 +1,110 @@
+# Versioning entry point for `main`.
+#
+# release-please reads the conventional-commit history and keeps an open
+# "Release PR" that bumps package.json and writes CHANGELOG.md. Merging that PR
+# is what cuts a version: it tags the commit, creates the GitHub Release, and
+# only then are the installers built and attached.
+#
+# Every other push to main is built and tested, but publishes nothing.
+#
+# Opening that PR needs more than the `pull-requests: write` below, because the
+# built-in GITHUB_TOKEN is not allowed to open pull requests unless the
+# "Allow GitHub Actions to create and approve pull requests" toggle is on under
+# Settings -> Actions -> General. It also would not help much on its own: a PR
+# opened with GITHUB_TOKEN does not trigger `pull_request` workflows, so the
+# Release PR would never be built or tested.
+#
+# So the token is picked in order of preference:
+#   1. a GitHub App installation token, from RELEASER_ID + RELEASER_PRIVATE_KEY.
+#      Short-lived, tied to no person, and able to bypass branch protection when
+#      the app is on the bypass list. Set these two and nothing else is needed.
+#   2. GH_TOKEN, a PAT with Contents + Pull requests read/write.
+#   3. GITHUB_TOKEN, which needs the toggle above and leaves the PR untested.
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{github.workflow}}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Maintain the release PR
+    runs-on: ubuntu-latest
+    env:
+      # A step-level `if` cannot read `secrets`, so the check is surfaced here.
+      HAS_RELEASE_APP: ${{ secrets.RELEASER_ID != '' }}
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Generate a token from the release app
+        id: app_token
+        if: env.HAS_RELEASE_APP == 'true'
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.RELEASER_ID }}
+          private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
+
+      # Which credential was picked decides whether the release PR can be opened
+      # at all, and the failure when it cannot is opaque, so say it up front.
+      - name: Report the credential release-please will use
+        env:
+          APP_TOKEN: ${{ steps.app_token.outputs.token }}
+          PAT: ${{ secrets.GH_TOKEN }}
+        run: |
+          if [ -n "$APP_TOKEN" ]; then
+            echo "Using the GitHub App installation token."
+          elif [ -n "$PAT" ]; then
+            echo "Using the GH_TOKEN PAT."
+          else
+            echo "::warning title=No release credential is configured::Falling back to GITHUB_TOKEN. It can push the release branch but cannot open the pull request unless Settings -> Actions -> General -> 'Allow GitHub Actions to create and approve pull requests' is enabled for the owning org and the repo. Setting RELEASER_ID + RELEASER_PRIVATE_KEY, or GH_TOKEN, avoids that toggle and also lets the release PR be built and tested."
+          fi
+
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          # A skipped step has no outputs, so this falls through the options in
+          # the order the header describes.
+          token: ${{ steps.app_token.outputs.token || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build:
+    name: Build and test
+    needs:
+      - release-please
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    uses: ./.github/workflows/compile-and-test.yml
+    with:
+      # Empty on ordinary pushes: the build then uses whatever version
+      # release-please last wrote into package.json.
+      app-version: ${{ needs.release-please.outputs.version }}
+      distribution-channel: latest
+      attest: true
+
+  publish:
+    name: Attach installers to the release
+    needs:
+      - release-please
+      - build
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/deploy.yml
+    with:
+      tag-name: ${{ needs.release-please.outputs.tag_name }}
+      distribution-channel: latest

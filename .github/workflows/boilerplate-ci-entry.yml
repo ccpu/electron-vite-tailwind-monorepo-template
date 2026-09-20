@@ -1,15 +1,9 @@
-# This file serves as the main CI entry point for the React Electron template.
+# CI for pull requests. Pushes to `main` are handled by release.yml, which builds
+# them and additionally maintains the release PR.
 
 name: React Electron Template CI
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - .editorconfig
-      - '.vscode/**'
   pull_request:
     paths-ignore:
       - '**.md'
@@ -20,19 +14,18 @@ concurrency:
   group: ${{github.workflow}}-${{ github.ref }}
   cancel-in-progress: true
 
+# Read-only by default: this workflow builds whatever a pull request contains.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   run-ci:
-    name: CI - React Template
-    uses: ./.github/workflows/ci.yml
+    name: Build and test
+    uses: ./.github/workflows/compile-and-test.yml
     with:
-      distribution-channel: main
+      distribution-channel: latest
     permissions:
-      contents: write
-      id-token: write
-      attestations: write
+      contents: read
 
   dependabot:
     permissions:

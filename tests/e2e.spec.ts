@@ -1,11 +1,57 @@
 /* eslint-disable no-restricted-properties */
 import type { BrowserWindow } from 'electron';
 import type { ElectronApplication, JSHandle } from 'playwright';
-import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { platform } from 'node:process';
 import { test as base, expect } from '@playwright/test';
 import { globSync } from 'glob';
 import { _electron as electron } from 'playwright';
+
+// Playwright runs from the repo root, same as the `dist/*` globs below.
+const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { name: string };
+
+/**
+ * electron-builder derives `productName` from the package name, and names the
+ * packaged executable after it. Keep in step with `electron-builder.mjs`.
+ */
+const productName = pkg.name
+  .split(/[^a-z0-9]+/iu)
+  .filter(Boolean)
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ');
+
+function resolveExecutablePath(): string {
+  const patternsByPlatform: Record<string, string[]> = {
+    darwin: [
+      `dist/mac*/${productName}.app/Contents/MacOS/${productName}`,
+      'dist/mac*/*.app/Contents/MacOS/*',
+    ],
+    win32: [`dist/win-unpacked/${productName}.exe`, 'dist/win-unpacked/*.exe'],
+  };
+
+  /*
+   * On Linux electron-builder falls back to `sanitizedName.toLowerCase()` for
+   * the executable name, which is neither `productName` nor the package name
+   * verbatim -- so every spelling it can land on is tried in turn.
+   */
+  const patterns = patternsByPlatform[platform] ?? [
+    `dist/linux-unpacked/${pkg.name}`,
+    `dist/linux-unpacked/${productName}`,
+    `dist/linux-unpacked/${productName.toLowerCase()}`,
+    `dist/linux-unpacked/${productName.replaceAll(' ', '')}`,
+  ];
+
+  for (const pattern of patterns) {
+    const [match] = globSync(pattern);
+    if (match) return match;
+  }
+
+  throw new Error(
+    `App executable not found for platform "${platform}". Searched: ${patterns.join(
+      ', ',
+    )}. Run "pnpm run compile" first.`,
+  );
+}
 
 // eslint-disable-next-line turbo/no-undeclared-env-vars
 process.env.PLAYWRIGHT_TEST = 'true';
@@ -20,22 +66,20 @@ const test = base.extend<TestFixtures>({
   electronApp: [
     // eslint-disable-next-line no-empty-pattern
     async ({}, use) => {
-      /**
-       * Executable path depends on root package name!
-       */
-      let executablePattern = 'dist/*/electron-app{,.*}';
-      if (platform === 'darwin') {
-        executablePattern += '/Contents/*/root';
-      }
+      const executablePath = resolveExecutablePath();
 
-      const [executablePath] = globSync(executablePattern);
-      if (!executablePath) {
-        throw new Error('App Executable path not found');
-      }
+      /*
+       * A stray ELECTRON_RUN_AS_NODE in the environment boots the packaged app
+       * as plain Node, which then rejects Playwright's --remote-debugging-port
+       * with an opaque "Process failed to launch!".
+       */
+      // eslint-disable-next-line turbo/no-undeclared-env-vars
+      const { ELECTRON_RUN_AS_NODE: _runAsNode, ...env } = process.env;
 
       const electronApp = await electron.launch({
         executablePath,
         args: ['--no-sandbox'],
+        env: env as Record<string, string>,
       });
 
       electronApp.on('console', (msg) => {
@@ -127,58 +171,49 @@ test.describe('Main window web content', async () => {
   });
 });
 
+/*
+ * The preload re-exposes everything `preload/src/index.ts` exports, under a
+ * base64 name. That module exports nothing -- it exposes `appApi` by hand -- so
+ * `appApi` is the whole of the contract a renderer can see. The tests that used
+ * to live here asserted on `versions`, `sha256sum` and `send` from the original
+ * boilerplate preload, which this template no longer has.
+ */
 test.describe('Preload context should be exposed', async () => {
-  test.describe(`versions should be exposed`, async () => {
-    test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(
-        () => typeof (globalThis as any)[btoa('versions')],
-      );
-      expect(type).toEqual('object');
-    });
-
-    test('with same value', async ({ page, electronVersions }) => {
-      const value = await page.evaluate(() => (globalThis as any)[btoa('versions')]);
-      expect(value).toEqual(electronVersions);
-    });
+  test('exposes appApi on the renderer', async ({ page }) => {
+    const type = await page.evaluate(
+      () => typeof (globalThis as Record<string, unknown>).appApi,
+    );
+    expect(type).toEqual('object');
   });
 
-  test.describe(`sha256sum should be exposed`, async () => {
-    test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(
-        () => typeof (globalThis as any)[btoa('sha256sum')],
-      );
-      expect(type).toEqual('function');
-    });
-
-    test('with same behavior', async ({ page }) => {
-      const testString = btoa(`${Date.now() * Math.random()}`);
-      const expectedValue = createHash('sha256').update(testString).digest('hex');
-      const value = await page.evaluate(
-        (str) => (globalThis as any)[btoa('sha256sum')](str),
-        testString,
-      );
-      expect(value).toEqual(expectedValue);
-    });
+  test('exposes the app API surface', async ({ page }) => {
+    const keys = await page.evaluate(() =>
+      Object.keys((globalThis as Record<string, unknown>).appApi as object),
+    );
+    expect(keys).toEqual(expect.arrayContaining(['invoke', 'openWindow']));
   });
 
-  test.describe(`send should be exposed`, async () => {
-    test('with same type`', async ({ page }) => {
-      const type = await page.evaluate(() => typeof (globalThis as any)[btoa('send')]);
-      expect(type).toEqual('function');
+  test('exposes the typed invoke namespace rather than a raw channel call', async ({
+    page,
+  }) => {
+    const shape = await page.evaluate(() => {
+      const api = (globalThis as Record<string, unknown>).appApi as Record<
+        string,
+        unknown
+      >;
+      return {
+        invoke: typeof api.invoke,
+        openWindow: typeof api.openWindow,
+        showNotification: typeof api.showNotification,
+      };
     });
 
-    test('with same behavior', async ({ page, electronApp }) => {
-      await electronApp.evaluate(async ({ ipcMain }) => {
-        ipcMain.handle('test', (event, message) => btoa(message));
-      });
-
-      const testString = btoa(`${Date.now() * Math.random()}`);
-      const expectedValue = btoa(testString);
-      const value = await page.evaluate(
-        async (str) => await (globalThis as any)[btoa('send')]('test', str),
-        testString,
-      );
-      expect(value).toEqual(expectedValue);
+    // `invoke` is the generated per-handler namespace, not a channel function,
+    // so nothing in the renderer can name an arbitrary IPC channel.
+    expect(shape).toEqual({
+      invoke: 'object',
+      openWindow: 'function',
+      showNotification: 'function',
     });
   });
 });

@@ -4,18 +4,37 @@ on:
   workflow_call:
     inputs:
       app-version:
-        required: true
+        description: >-
+          Version to stamp into package.json before packaging. Left empty, the
+          version release-please already wrote into package.json is used as-is.
+        required: false
         type: string
+        default: ''
       distribution-channel:
-        required: true
+        description: >-
+          electron-updater channel. `latest` is the stable channel and the one
+          electron-builder writes `latest.yml` for.
+        required: false
         type: string
+        default: latest
+      attest:
+        description: >-
+          Sign build provenance for the installers. Only worth doing for builds
+          that can actually ship, and it is what makes the caller hand over
+          `id-token`/`attestations` write -- so pull request builds leave it off.
+        required: false
+        type: boolean
+        default: false
 
 defaults:
   run:
     shell: bash
 
+# Nothing here writes to the repo: it checks out, builds, attests and uploads to
+# the run. Attestation is the only thing needing more than read, and only when
+# `attest` is on.
 permissions:
-  contents: write
+  contents: read
   id-token: write
   attestations: write
 
@@ -32,6 +51,16 @@ jobs:
         name: Setup project
       - run: pnpm run typecheck
 
+  # Unit tests are platform-agnostic, so they run once here rather than once per
+  # entry of the `compile` matrix.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-project
+        name: Setup project
+      - run: pnpm run test
+
   compile:
     strategy:
       fail-fast: false
@@ -46,26 +75,48 @@ jobs:
       - uses: ./.github/actions/setup-project
         name: Setup project
 
-      - run: pnpm version "${{inputs.app-version}}" --no-git-tag-version
-      - run: pnpm run compile -- -p never
+      - name: Stamp the app version
+        if: inputs.app-version != ''
+        run: pnpm version "${{inputs.app-version}}" --no-git-tag-version
+
+      # No GH_TOKEN here on purpose: `compile` runs `--publish never`, so it has
+      # nothing to publish, and this job builds whatever code the caller points
+      # it at.
+      - run: pnpm run compile
         env:
           VITE_DISTRIBUTION_CHANNEL: ${{inputs.distribution-channel}}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - run: pnpm run test
-
-      - run: pnpm run test:e2e
+      # `test:e2e:run` skips the rebuild -- the app was just compiled above.
+      - run: pnpm run test:e2e:run
         if: matrix.os != 'ubuntu-latest'
 
-      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm run test:e2e
+      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm run test:e2e:run
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Collect release artifacts
+        id: artifacts
+        run: |
+          shopt -s nullglob
+          files=(dist/*.exe dist/*.deb dist/*.dmg dist/*.zip dist/*.AppImage dist/*.blockmap dist/latest*.yml dist/alpha*.yml dist/beta*.yml)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::No release artifacts were produced in dist/"
+            ls -R dist || true
+            exit 1
+          fi
+          for f in "${files[@]}"; do echo "found: $f"; done
+          {
+            echo 'paths<<ARTIFACTS_EOF'
+            for f in "${files[@]}"; do echo "$f"; done
+            echo 'ARTIFACTS_EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - uses: actions/attest-build-provenance@v3
+        if: inputs.attest
         with:
-          subject-path: 'dist/Electron Vite Monorepo Template*, dist/latest*.yml'
+          subject-path: ${{ steps.artifacts.outputs.paths }}
 
       - name: Upload compiled app
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.os }}-${{inputs.distribution-channel}}
           path: dist

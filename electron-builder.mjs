@@ -102,11 +102,14 @@ export default async () => {
       target: ['deb'],
     },
     /**
-     * It is recommended to avoid using non-standard characters such as spaces in artifact names,
-     * as they can unpredictably change during deployment, making them impossible to locate and download for update.
+     * Named after the package name, not `productName`. `productName` is derived
+     * from it in Pascal case and so contains spaces, and electron-builder
+     * rewrites a space when it generates the update feed: `latest.yml` would
+     * point at "My-App-*.exe" while the uploaded asset is "My App-*.exe", and
+     * every auto-update 404s.
      */
     // eslint-disable-next-line no-template-curly-in-string
-    artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
+    artifactName: '${name}-${version}-${os}-${arch}.${ext}',
     files: [
       'LICENSE*',
       pkg.main,

@@ -1,14 +1,18 @@
+# Attaches the built installers to a release that release-please has already
+# created. It never creates the release itself.
 name: Deploy
 
 on:
   workflow_call:
     inputs:
-      app-version:
+      tag-name:
+        description: Tag of the release to upload the installers to, e.g. `v1.1.0`.
         required: true
         type: string
       distribution-channel:
-        required: true
+        required: false
         type: string
+        default: latest
 
 permissions:
   contents: write
@@ -26,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{inputs.distribution-channel}}
-      url: https://github.com/${{github.repository}}/releases/tag/v${{inputs.app-version}}
+      url: https://github.com/${{github.repository}}/releases/tag/${{inputs.tag-name}}
     steps:
       - name: Download compiled app
         uses: actions/download-artifact@v5
@@ -35,6 +39,16 @@ jobs:
           path: dist
           merge-multiple: true
 
-      - run: gh release create v${{inputs.app-version}} dist/"Electron Vite Monorepo Template"* dist/latest*.yml --repo ${{github.repository}}
+      - name: Attach installers to the release
+        run: |
+          shopt -s nullglob
+          files=(dist/*.exe dist/*.deb dist/*.dmg dist/*.zip dist/*.AppImage dist/*.blockmap dist/latest*.yml dist/alpha*.yml dist/beta*.yml)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::No artifacts were downloaded for release ${{inputs.tag-name}}"
+            ls -R dist || true
+            exit 1
+          fi
+          for f in "${files[@]}"; do echo "uploading: $f"; done
+          gh release upload "${{inputs.tag-name}}" "${files[@]}" --clobber --repo "${{github.repository}}"
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
