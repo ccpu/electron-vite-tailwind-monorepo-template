@@ -24,8 +24,7 @@
     "@pixpilot/eslint-config-next": "^0.2.13",
     "@pixpilot/eslint-config-react": "^0.10.0",
     "eslint-plugin-turbo": "^2.11.2",
-    "prettier-plugin-tailwindcss": "catalog:dev",
-    "typescript-eslint": "catalog:dev"
+    "prettier-plugin-tailwindcss": "catalog:dev"
   },
   "devDependencies": {
     "@internal/prettier-config": "workspace:*",

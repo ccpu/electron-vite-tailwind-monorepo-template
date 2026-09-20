@@ -33,7 +33,6 @@
     "jsdom": "catalog:dev",
     "prettier": "catalog:dev",
     "typescript": "catalog:dev",
-    "typescript-eslint": "catalog:dev",
     "vite": "catalog:dev",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "catalog:dev"

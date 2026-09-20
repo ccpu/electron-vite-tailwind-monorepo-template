@@ -1,4 +1,4 @@
 import config from './base.mjs';
 
-/** @type {import('typescript-eslint').Config} */
+/** @type {import('eslint').Linter.Config[]} */
 export default config;

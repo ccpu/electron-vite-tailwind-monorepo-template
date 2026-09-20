@@ -43,5 +43,5 @@ const baseConfig = await defineConfig(
 /**
  * All packages that leverage t3-env should use this rule
  */
-/** @type {Awaited<import('typescript-eslint').Config>} */
+/** @type {Awaited<import('eslint').Linter.Config[]>} */
 export default baseConfig;
