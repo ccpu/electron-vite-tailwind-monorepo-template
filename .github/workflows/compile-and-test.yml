@@ -75,7 +75,16 @@ jobs:
 
       - name: Stamp the app version
         if: inputs.app-version != ''
-        run: pnpm version "${{inputs.app-version}}" --no-git-tag-version
+        run: |
+          # `pnpm version` exits non-zero with "Version not changed" when asked
+          # for the version already in package.json, which is exactly the case
+          # on a release whose version the checked-out commit already carries.
+          current=$(node -p "require('./package.json').version")
+          if [ "$current" = "${{inputs.app-version}}" ]; then
+            echo "package.json is already at $current; nothing to stamp."
+          else
+            pnpm version "${{inputs.app-version}}" --no-git-tag-version
+          fi
 
       # No GH_TOKEN here on purpose: `compile` runs `--publish never`, so it has
       # nothing to publish, and this job builds whatever code the caller points
