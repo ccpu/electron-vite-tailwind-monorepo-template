@@ -51,4 +51,4 @@ jobs:
           for f in "${files[@]}"; do echo "uploading: $f"; done
           gh release upload "${{inputs.tag-name}}" "${files[@]}" --clobber --repo "${{github.repository}}"
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}

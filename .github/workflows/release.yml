@@ -1,26 +1,12 @@
-# Versioning entry point for `main`.
+# A push to main is the whole release: semantic-release reads the
+# conventional-commit history, bumps package.json, writes the changelog, tags
+# and creates the GitHub Release, then the installers are built and attached to
+# it. There is deliberately no release pull request -- a bot-authored PR is what
+# made GitHub hold every run for approval.
 #
-# release-please reads the conventional-commit history and keeps an open
-# "Release PR" that bumps package.json and writes CHANGELOG.md. Merging that PR
-# is what cuts a version: it tags the commit, creates the GitHub Release, and
-# only then are the installers built and attached.
-#
-# Every other push to main is built and tested, but publishes nothing.
-#
-# Opening that PR needs more than the `pull-requests: write` below, because the
-# built-in GITHUB_TOKEN is not allowed to open pull requests unless the
-# "Allow GitHub Actions to create and approve pull requests" toggle is on under
-# Settings -> Actions -> General, on the repository itself (and on the owning
-# organisation first, if there is one). It also would not help much on its own:
-# a PR opened with GITHUB_TOKEN does not trigger `pull_request` workflows, so
-# the Release PR would never be built or tested.
-#
-# So the token is picked in order of preference:
-#   1. a GitHub App installation token, from RELEASER_ID + RELEASER_PRIVATE_KEY.
-#      Short-lived, tied to no person, and able to bypass branch protection when
-#      the app is on the bypass list. Set these two and nothing else is needed.
-#   2. GH_TOKEN, a PAT with Contents + Pull requests read/write.
-#   3. GITHUB_TOKEN, which needs the toggle above and leaves the PR untested.
+# semantic-release rather than changesets because the version that ships lives
+# in the root package.json, which is what electron-builder reads; changesets
+# versions workspace members and would never touch it.
 name: Release
 
 on:
@@ -35,96 +21,65 @@ concurrency:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
-  release-please:
-    name: Maintain the release PR
+  release:
+    name: Version and release
     runs-on: ubuntu-latest
-    env:
-      # A step-level `if` cannot read `secrets`, so the check is surfaced here.
-      HAS_RELEASE_APP: ${{ secrets.RELEASER_ID != '' }}
+    # The release commit is pushed back to main. GITHUB_TOKEN pushes do not
+    # start another run, and the marker covers the case where a PAT is used.
+    if: >-
+      ${{
+        github.event_name != 'push' ||
+        !contains(github.event.head_commit.message, '[skip ci]')
+      }}
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+      released: ${{ steps.release.outputs.released }}
       version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
     steps:
-      - name: Generate a token from the release app
-        id: app_token
-        if: env.HAS_RELEASE_APP == 'true'
-        uses: actions/create-github-app-token@v3
+      - uses: actions/checkout@v5
         with:
-          app-id: ${{ secrets.RELEASER_ID }}
-          private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
+          # The whole history, so the commits since the last tag can be read.
+          fetch-depth: 0
+          persist-credentials: false
 
-      # Three things can supply this token and any of them can be stale, so the
-      # chosen one is tried against the API before release-please gets it. A
-      # rejected PAT is reported and stepped over rather than failing the run.
-      - name: Choose and verify the release credential
-        id: creds
-        env:
-          APP_TOKEN: ${{ steps.app_token.outputs.token }}
-          PAT: ${{ secrets.GH_TOKEN }}
-          FALLBACK: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          accepted() {
-            [ -n "$1" ] || return 1
-            local code
-            code=$(curl -sS -o /dev/null -w '%{http_code}'               -H "Authorization: Bearer $1"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/$GITHUB_REPOSITORY")
-            [ "$code" = "200" ]
-          }
-          use() {
-            echo "::add-mask::$2"
-            echo "token=$2" >> "$GITHUB_OUTPUT"
-            echo "Using $1."
-          }
-          if accepted "$APP_TOKEN"; then
-            use "the GitHub App installation token" "$APP_TOKEN"
-          elif accepted "$PAT"; then
-            use "the GH_TOKEN PAT" "$PAT"
-          else
-            if [ -n "$APP_TOKEN" ]; then
-              echo "::warning title=The release app token was rejected::Check that the app is installed on this repository and has Contents and Pull requests read/write."
-            fi
-            if [ -n "$PAT" ]; then
-              echo "::warning title=GH_TOKEN was rejected::The GH_TOKEN secret is expired, revoked or mistyped, so it is being ignored. Rotate or delete it."
-            fi
-            echo "::warning title=Falling back to GITHUB_TOKEN::It can push the release branch but cannot open the pull request unless Settings -> Actions -> General -> 'Allow GitHub Actions to create and approve pull requests' is enabled on the repository (and, when an organisation owns it, on the organisation first -- the repo checkbox stays disabled until then). It also leaves the release PR without CI."
-            use "the built-in GITHUB_TOKEN" "$FALLBACK"
-          fi
+      - uses: ./.github/actions/setup-project
+        name: Setup project
 
-      - uses: googleapis/release-please-action@v5
+      # The `exec` plugin in .releaserc.json only runs when a release is
+      # actually cut, so these outputs exist if and only if there was one.
+      - name: Version, tag and release
         id: release
-        with:
-          token: ${{ steps.creds.outputs.token }}
-          config-file: .release-please-config.json
-          manifest-file: .release-please-manifest.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm exec semantic-release
 
   build:
     name: Build and test
     needs:
-      - release-please
+      - release
     permissions:
       contents: read
       id-token: write
       attestations: write
     uses: ./.github/workflows/compile-and-test.yml
     with:
-      # Empty on ordinary pushes: the build then uses whatever version
-      # release-please last wrote into package.json.
-      app-version: ${{ needs.release-please.outputs.version }}
+      # Stamped rather than checked out, so the installers carry the version
+      # that was just released without this job racing the bump commit.
+      app-version: ${{ needs.release.outputs.version }}
       distribution-channel: latest
       attest: true
 
   publish:
     name: Attach installers to the release
     needs:
-      - release-please
+      - release
       - build
-    if: needs.release-please.outputs.release_created == 'true'
+    if: needs.release.outputs.released == 'true'
     permissions:
       contents: write
     uses: ./.github/workflows/deploy.yml
     with:
-      tag-name: ${{ needs.release-please.outputs.tag_name }}
+      tag-name: ${{ needs.release.outputs.tag }}
       distribution-channel: latest

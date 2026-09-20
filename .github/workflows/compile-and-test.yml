@@ -30,13 +30,11 @@ defaults:
   run:
     shell: bash
 
-# Nothing here writes to the repo: it checks out, builds, attests and uploads to
-# the run. Attestation is the only thing needing more than read, and only when
-# `attest` is on.
-permissions:
-  contents: read
-  id-token: write
-  attestations: write
+# No `permissions` block on purpose. A reusable workflow may not request more
+# than its caller granted -- GitHub rejects the run outright rather than
+# trimming it -- so the scopes are left to each caller: pull request builds
+# grant read only, and the release build additionally grants the `id-token` and
+# `attestations` writes that `attest` needs.
 
 env:
   NODE_NO_WARNINGS: 1
