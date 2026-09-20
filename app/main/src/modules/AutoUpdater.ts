@@ -20,6 +20,10 @@ export class AutoUpdater implements AppModule {
   }
 
   async enable(): Promise<void> {
+    // Packaged Playwright runs precede publishing, so no update feed exists yet.
+    // eslint-disable-next-line turbo/no-undeclared-env-vars, no-restricted-properties, node/prefer-global/process
+    if (process.env.PLAYWRIGHT_TEST === 'true') return;
+
     await this.runAutoUpdater();
   }
 

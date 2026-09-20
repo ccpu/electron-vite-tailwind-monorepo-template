@@ -1,7 +1,9 @@
 /* eslint-disable no-restricted-properties */
 import type { BrowserWindow } from 'electron';
 import type { ElectronApplication, JSHandle } from 'playwright';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { platform } from 'node:process';
 import { test as base, expect } from '@playwright/test';
 import { globSync } from 'glob';
@@ -9,6 +11,7 @@ import { _electron as electron } from 'playwright';
 
 // Playwright runs from the repo root, same as the `dist/*` globs below.
 const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { name: string };
+const userDataDirectory = mkdtempSync(join(tmpdir(), 'electron-e2e-'));
 
 /**
  * electron-builder derives `productName` from the package name, and names the
@@ -78,7 +81,7 @@ const test = base.extend<TestFixtures>({
 
       const electronApp = await electron.launch({
         executablePath,
-        args: ['--no-sandbox'],
+        args: ['--no-sandbox', `--user-data-dir=${userDataDirectory}`],
         env: env as Record<string, string>,
       });
 

@@ -38,7 +38,7 @@ export default async () => {
       /** @type {string[]} */
       patterns = patterns.map(
         /** @param {string} p */
-        (p) => join(pkg.relativeDir, p),
+        (p) => join(pkg.relativeDir, p).replaceAll('\\', '/'),
       );
       allFilesToInclude.push(...patterns);
     }
