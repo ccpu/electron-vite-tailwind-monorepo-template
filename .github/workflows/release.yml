@@ -10,9 +10,10 @@
 # Opening that PR needs more than the `pull-requests: write` below, because the
 # built-in GITHUB_TOKEN is not allowed to open pull requests unless the
 # "Allow GitHub Actions to create and approve pull requests" toggle is on under
-# Settings -> Actions -> General. It also would not help much on its own: a PR
-# opened with GITHUB_TOKEN does not trigger `pull_request` workflows, so the
-# Release PR would never be built or tested.
+# Settings -> Actions -> General, on the repository itself (and on the owning
+# organisation first, if there is one). It also would not help much on its own:
+# a PR opened with GITHUB_TOKEN does not trigger `pull_request` workflows, so
+# the Release PR would never be built or tested.
 #
 # So the token is picked in order of preference:
 #   1. a GitHub App installation token, from RELEASER_ID + RELEASER_PRIVATE_KEY.
@@ -56,27 +57,46 @@ jobs:
           app-id: ${{ secrets.RELEASER_ID }}
           private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
 
-      # Which credential was picked decides whether the release PR can be opened
-      # at all, and the failure when it cannot is opaque, so say it up front.
-      - name: Report the credential release-please will use
+      # Three things can supply this token and any of them can be stale, so the
+      # chosen one is tried against the API before release-please gets it. A
+      # rejected PAT is reported and stepped over rather than failing the run.
+      - name: Choose and verify the release credential
+        id: creds
         env:
           APP_TOKEN: ${{ steps.app_token.outputs.token }}
           PAT: ${{ secrets.GH_TOKEN }}
+          FALLBACK: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -n "$APP_TOKEN" ]; then
-            echo "Using the GitHub App installation token."
-          elif [ -n "$PAT" ]; then
-            echo "Using the GH_TOKEN PAT."
+          accepted() {
+            [ -n "$1" ] || return 1
+            local code
+            code=$(curl -sS -o /dev/null -w '%{http_code}'               -H "Authorization: Bearer $1"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/$GITHUB_REPOSITORY")
+            [ "$code" = "200" ]
+          }
+          use() {
+            echo "::add-mask::$2"
+            echo "token=$2" >> "$GITHUB_OUTPUT"
+            echo "Using $1."
+          }
+          if accepted "$APP_TOKEN"; then
+            use "the GitHub App installation token" "$APP_TOKEN"
+          elif accepted "$PAT"; then
+            use "the GH_TOKEN PAT" "$PAT"
           else
-            echo "::warning title=No release credential is configured::Falling back to GITHUB_TOKEN. It can push the release branch but cannot open the pull request unless Settings -> Actions -> General -> 'Allow GitHub Actions to create and approve pull requests' is enabled for the owning org and the repo. Setting RELEASER_ID + RELEASER_PRIVATE_KEY, or GH_TOKEN, avoids that toggle and also lets the release PR be built and tested."
+            if [ -n "$APP_TOKEN" ]; then
+              echo "::warning title=The release app token was rejected::Check that the app is installed on this repository and has Contents and Pull requests read/write."
+            fi
+            if [ -n "$PAT" ]; then
+              echo "::warning title=GH_TOKEN was rejected::The GH_TOKEN secret is expired, revoked or mistyped, so it is being ignored. Rotate or delete it."
+            fi
+            echo "::warning title=Falling back to GITHUB_TOKEN::It can push the release branch but cannot open the pull request unless Settings -> Actions -> General -> 'Allow GitHub Actions to create and approve pull requests' is enabled on the repository (and, when an organisation owns it, on the organisation first -- the repo checkbox stays disabled until then). It also leaves the release PR without CI."
+            use "the built-in GITHUB_TOKEN" "$FALLBACK"
           fi
 
       - uses: googleapis/release-please-action@v5
         id: release
         with:
-          # A skipped step has no outputs, so this falls through the options in
-          # the order the header describes.
-          token: ${{ steps.app_token.outputs.token || secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ steps.creds.outputs.token }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
 
