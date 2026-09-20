@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/compare/v1.0.1...v1.0.2) (2026-09-20)
+
+
+### Bug Fixes
+
+* **AutoUpdater:** prevent updates during Playwright tests ([a554ee5](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/commit/a554ee50ec989d09633d33d23ff5a20afcf431a8))
+
 ## [1.0.1](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/compare/v1.0.0...v1.0.1) (2026-09-20)
 
 
