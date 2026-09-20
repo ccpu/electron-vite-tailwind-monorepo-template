@@ -1,6 +1,6 @@
 {
   "name": "react-electron-vite-monorepo-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "packageManager": "pnpm@10.34.5",
   "description": "Modern React Electron application template with pnpm monorepo, Turbo, Vite, TypeScript, Tailwind CSS, and Vitest - specifically designed for React applications",

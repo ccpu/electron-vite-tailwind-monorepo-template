@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/compare/v1.0.0...v1.0.1) (2026-09-20)
+
+
+### Bug Fixes
+
+* improve app version stamping logic in CI workflow ([d66b0f4](https://github.com/ccpu/electron-vite-tailwind-monorepo-template/commit/d66b0f4bdbe55f00bfaec3bf17381b9c3ea91f3c))
+
 # 1.0.0 (2026-09-20)
 
 
